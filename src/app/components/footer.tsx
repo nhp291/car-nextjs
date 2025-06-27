@@ -1,8 +1,8 @@
-import { IcFacebook } from "../public/icons/IcFacebook";
-import { IcTwitter } from "../public/icons/IcTwitter";
-import { IcLinkedin } from "../public/icons/IcLinkedin";
-import { IcDiscord } from "../public/icons/IcDiscord";
-import { IcGitHub } from "../public/icons/IcGitHub";
+import { IcFacebook } from '@/app/public/icons/IcFacebook';
+import { IcTwitter } from '@/app/public/icons/IcTwitter';
+import { IcLinkedin } from '@/app/public/icons/IcLinkedin';
+import { IcDiscord } from '@/app/public/icons/IcDiscord';
+import { IcGitHub } from '@/app/public/icons/IcGitHub';
 
 export const Footer = () => {
     return (
@@ -10,7 +10,7 @@ export const Footer = () => {
             <div className="container mx-auto py-10 px-4 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
                 <div className="text-left">
                     <div className="text-xl font-bold mb-2">Car Next.js</div>
-                    <div className="text-blue-100 text-sm mb-2">Nền tảng tra cứu & trải nghiệm xe hiện đại, công nghệ mới nhất 2024</div>
+                    <div className="text-blue-100 text-sm mb-2">Nền tảng tra cứu & trải nghiệm xe hiện đại, công nghệ mới nhất 2025</div>
                     <div className="text-blue-200 text-xs">Liên hệ: <a href="mailto:support@car-nextjs.com" className="underline hover:text-blue-300">support@car-nextjs.com</a></div>
                 </div>
                 <nav>

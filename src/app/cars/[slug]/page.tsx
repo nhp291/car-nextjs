@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import CarDetail from '../../views/product/CarDetail';
-import { carsMock } from '../../mock/cars.mock';
+import { cars } from '../../mock/cars.mock';
 
-export default function CarDetailPage({ params }: { params: { slug: string } }) {
-    const car = carsMock.find(c => c.id === params.slug);
+export default async function CarDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const car = cars.find(c => c.id === slug);
     if (!car) return notFound();
     return <CarDetail car={car} />;
 } 

@@ -5,8 +5,8 @@ export const IcHeartOutline = ({ width, height }: SizeImage) => {
         <div style={{ width, height }}>
             <svg viewBox="0 0 24 24" fill="none">
                 <path
-                    d="M12.62 20.8101C12.28 20.9301 11.72 20.9301 11.38 20.8101C8.48 19.8201 2 15.6901 2 8.6901C2 5.6001 4.49 3.1001 7.56 3.1001C9.38 3.1001 10.99 3.9801 12 5.3401C13.01 3.9801 14.63 3.1001 16.44 3.1001C19.51 3.1001 22 5.6001 22 8.6901C22 15.6901 15.52 19.8201 12.62 20.8101Z"
-                    stroke="#90A3BF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    d="M21 8.25C21 5 18.964 3 16.5 3C14.036 3 12 5 12 8.25C12 5 9.964 3 7.5 3C5.036 3 3 5 3 8.25C3 15 12 21 12 21C12 21 21 15 21 8.25Z"
+                    stroke="#90A3BF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
         </div>
     )

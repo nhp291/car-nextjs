@@ -11,6 +11,7 @@ type Props = {
   className?: string;
   startIcon?: ReactNode;
   label?: string;
+  required?: boolean;
 }
 
 const COLOR_CLASS: Record<'accent' | 'primary' | 'secondary', string> = {
@@ -30,6 +31,7 @@ export const TextField = ({
   startIcon,
   className = '',
   label,
+  required = false,
 }: Props) => {
   return (
     <div className="flex flex-col gap-1" style={{ width }}>
@@ -48,6 +50,7 @@ export const TextField = ({
           value={value}
           onChange={(e) => onChange && onChange(e.target.value)}
           disabled={loading}
+          required={required}
         />
         {loading && (
           <span className="absolute right-3 animate-spin">
