@@ -37,7 +37,7 @@ export default function Favorites() {
         const mockFavorites: FavoriteCar[] = [
             {
                 id: 'toyota-camry',
-        name: 'Toyota Camry',
+                name: 'Toyota Camry',
                 brand: 'Toyota',
                 type: 'Sedan',
                 price: '1.2 tỷ',
@@ -46,7 +46,7 @@ export default function Favorites() {
                 tire: '18 inch',
                 steering: 'Tự động',
                 image: '/public/images/car.png',
-        badge: 'Mới',
+                badge: 'Mới',
                 addedDate: '2024-01-15',
                 notes: 'Xe gia đình tốt, tiết kiệm nhiên liệu'
             },
@@ -166,6 +166,7 @@ export default function Favorites() {
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                         <div className="flex flex-col md:flex-row gap-4 flex-1">
                             <TextField
+                                className=' text-[#334155]'
                                 width="300px"
                                 height="44px"
                                 color="primary"
@@ -289,7 +290,7 @@ export default function Favorites() {
                                     <Button color="secondary" width="80px" height="38px">
                                         <IcHeartFilled width="20px" height="20px" />
                                     </Button>
-                            </div>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -331,8 +332,8 @@ export default function Favorites() {
                                 💾 Sao lưu
                             </Button>
                         </div>
-                </div>
-            )}
+                    </div>
+                )}
             </div>
         </main>
     );

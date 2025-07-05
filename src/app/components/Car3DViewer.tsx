@@ -1,236 +1,157 @@
 'use client';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
-import { useRef, useState, useEffect } from 'react';
+import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
+import { useRef, useState, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
-
-// Car body component - Mercedes AMG style
-function CarBody({ position = [0, 0, 0] as [number, number, number], rotation = [0, 0, 0] as [number, number, number] }) {
-    const meshRef = useRef<THREE.Mesh>(null);
-
-    useFrame((state) => {
-        if (meshRef.current) {
-            meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-        }
-    });
-
-    return (
-        <group position={position} rotation={rotation}>
-            {/* Main body - Mercedes AMG style */}
-            <mesh ref={meshRef} castShadow receiveShadow position={[0, 0.6, 0]}>
-                <boxGeometry args={[2.8, 0.6, 1.4]} />
-                <meshStandardMaterial
-                    color="#000000"
-                    metalness={0.9}
-                    roughness={0.1}
-                    envMapIntensity={1.2}
-                />
-            </mesh>
-
-            {/* Hood - AMG signature */}
-            <mesh castShadow receiveShadow position={[0, 1.0, 0.4]}>
-                <boxGeometry args={[2.4, 0.08, 0.9]} />
-                <meshStandardMaterial color="#1a1a1a" metalness={0.8} roughness={0.2} />
-            </mesh>
-
-            {/* Roof - sleek design */}
-            <mesh castShadow receiveShadow position={[0, 1.2, 0]}>
-                <boxGeometry args={[2.0, 0.06, 1.1]} />
-                <meshStandardMaterial color="#000000" metalness={0.9} roughness={0.1} />
-            </mesh>
-
-            {/* Windows - panoramic */}
-            <mesh castShadow receiveShadow position={[0, 1.15, 0.5]}>
-                <boxGeometry args={[1.8, 0.04, 0.7]} />
-                <meshStandardMaterial color="#0ea5e9" metalness={0.95} roughness={0.05} transparent opacity={0.6} />
-            </mesh>
-
-            {/* Front window */}
-            <mesh castShadow receiveShadow position={[0, 0.95, 0.7]}>
-                <boxGeometry args={[1.6, 0.04, 0.4]} />
-                <meshStandardMaterial color="#0ea5e9" metalness={0.95} roughness={0.05} transparent opacity={0.7} />
-            </mesh>
-
-            {/* AMG Grille */}
-            <mesh castShadow receiveShadow position={[0, 0.8, 0.7]}>
-                <boxGeometry args={[1.2, 0.3, 0.05]} />
-                <meshStandardMaterial color="#374151" metalness={0.7} roughness={0.3} />
-            </mesh>
-
-            {/* Mercedes Star */}
-            <mesh castShadow receiveShadow position={[0, 0.95, 0.75]}>
-                <cylinderGeometry args={[0.08, 0.08, 0.02, 8]} />
-                <meshStandardMaterial color="#fbbf24" metalness={0.9} roughness={0.1} />
-            </mesh>
-
-            {/* AMG Headlights - LED style */}
-            <mesh castShadow receiveShadow position={[0.9, 0.85, 0.65]}>
-                <boxGeometry args={[0.3, 0.2, 0.1]} />
-                <meshStandardMaterial color="#fbbf24" emissive="#fbbf24" emissiveIntensity={0.8} />
-            </mesh>
-            <mesh castShadow receiveShadow position={[-0.9, 0.85, 0.65]}>
-                <boxGeometry args={[0.3, 0.2, 0.1]} />
-                <meshStandardMaterial color="#fbbf24" emissive="#fbbf24" emissiveIntensity={0.8} />
-            </mesh>
-
-            {/* AMG Taillights */}
-            <mesh castShadow receiveShadow position={[0.9, 0.85, -0.65]}>
-                <boxGeometry args={[0.25, 0.15, 0.08]} />
-                <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={0.6} />
-            </mesh>
-            <mesh castShadow receiveShadow position={[-0.9, 0.85, -0.65]}>
-                <boxGeometry args={[0.25, 0.15, 0.08]} />
-                <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={0.6} />
-            </mesh>
-
-            {/* AMG Exhaust tips */}
-            <mesh castShadow receiveShadow position={[0.4, 0.3, -0.7]}>
-                <cylinderGeometry args={[0.08, 0.08, 0.2, 16]} />
-                <meshStandardMaterial color="#6b7280" metalness={0.9} roughness={0.1} />
-            </mesh>
-            <mesh castShadow receiveShadow position={[-0.4, 0.3, -0.7]}>
-                <cylinderGeometry args={[0.08, 0.08, 0.2, 16]} />
-                <meshStandardMaterial color="#6b7280" metalness={0.9} roughness={0.1} />
-            </mesh>
-
-            {/* Side skirts */}
-            <mesh castShadow receiveShadow position={[1.4, 0.2, 0]}>
-                <boxGeometry args={[0.05, 0.1, 1.2]} />
-                <meshStandardMaterial color="#374151" metalness={0.6} roughness={0.4} />
-            </mesh>
-            <mesh castShadow receiveShadow position={[-1.4, 0.2, 0]}>
-                <boxGeometry args={[0.05, 0.1, 1.2]} />
-                <meshStandardMaterial color="#374151" metalness={0.6} roughness={0.4} />
-            </mesh>
-        </group>
-    );
-}
-
-// Wheel component - AMG style
-function Wheel({ position = [0, 0, 0] as [number, number, number] }) {
-    const wheelRef = useRef<THREE.Mesh>(null);
-
-    useFrame(() => {
-        if (wheelRef.current) {
-            wheelRef.current.rotation.x += 0.05;
-        }
-    });
-
-    return (
-        <group position={position}>
-            {/* Tire - AMG performance */}
-            <mesh ref={wheelRef} castShadow receiveShadow>
-                <cylinderGeometry args={[0.35, 0.35, 0.25, 32]} />
-                <meshStandardMaterial color="#0f0f0f" />
-            </mesh>
-
-            {/* Rim - AMG forged */}
-            <mesh castShadow receiveShadow>
-                <cylinderGeometry args={[0.28, 0.28, 0.27, 32]} />
-                <meshStandardMaterial color="#374151" metalness={0.9} roughness={0.1} />
-            </mesh>
-
-            {/* AMG Hub cap */}
-            <mesh castShadow receiveShadow>
-                <cylinderGeometry args={[0.12, 0.12, 0.29, 16]} />
-                <meshStandardMaterial color="#fbbf24" metalness={0.9} roughness={0.1} />
-            </mesh>
-
-            {/* AMG Logo on hub */}
-            <mesh castShadow receiveShadow position={[0, 0, 0.15]}>
-                <cylinderGeometry args={[0.06, 0.06, 0.01, 8]} />
-                <meshStandardMaterial color="#000000" />
-            </mesh>
-
-            {/* Brake caliper */}
-            <mesh castShadow receiveShadow position={[0, 0, 0.13]}>
-                <boxGeometry args={[0.4, 0.08, 0.02]} />
-                <meshStandardMaterial color="#ef4444" />
-            </mesh>
-        </group>
-    );
-}
 
 // Ground component
 function Ground() {
     return (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
-            <planeGeometry args={[10, 10]} />
+        <mesh rotation={[-Math.PI / 2, 10, 0]} position={[0, -0.5, 0]} receiveShadow>
+            <planeGeometry args={[15, 10]} />
             <meshStandardMaterial color="#f3f4f6" />
         </mesh>
     );
 }
 
-// Main Car3DViewer component
+// Nissan GTR Model loader
+function NissanGTRModel({ file, ...props }: { file: string }) {
+    const gltf = useGLTF(`/images/${file}`);
+    return <primitive object={gltf.scene} scale={1.1} position={[0, 0.15, 0]} {...props} />;
+}
+
+// Ground chỉ để đổ bóng (shadow only)
+function ShadowGround() {
+    return (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+            <planeGeometry args={[15, 10]} />
+            <shadowMaterial opacity={0.35} />
+        </mesh>
+    );
+}
+
+const ENV_PRESETS = [
+    { label: 'Thành phố (City)', value: 'city' },
+    { label: 'Hoàng hôn (Sunset)', value: 'sunset' },
+    { label: 'Bình minh (Dawn)', value: 'dawn' },
+    { label: 'Ban đêm (Night)', value: 'night' },
+    { label: 'Nhà kho (Warehouse)', value: 'warehouse' },
+    { label: 'Rừng cây (Forest)', value: 'forest' },
+    { label: 'Công viên (Park)', value: 'park' },
+    { label: 'Căn hộ (Apartment)', value: 'apartment' },
+    { label: 'Studio', value: 'studio' },
+    { label: 'Sảnh lớn (Lobby)', value: 'lobby' },
+    { label: '--- Tuỳ chỉnh ---', value: '', disabled: true },
+    { label: 'HDRI Trường đua (Tự thêm file .hdr)', value: 'custom-hdri', disabled: true },
+    { label: 'Ảnh panorama 360° (Tự thêm file .jpg)', value: 'custom-panorama', disabled: true },
+];
+
+// Đảm bảo envPreset luôn là 1 trong các giá trị hợp lệ
+const validPresets = [
+    'city', 'sunset', 'dawn', 'night', 'warehouse', 'forest', 'apartment', 'studio', 'lobby', 'park'
+] as const;
+
+type PresetType = typeof validPresets[number];
+
+const CAR_MODELS = [
+    { label: 'Nissan GTR', file: 'Nissan_GTR.glb' },
+    { label: 'Mitsubishi L200', file: 'Mitsubishi_L200.glb' },
+    { label: 'SUV', file: 'SUV.glb' },
+    { label: 'Mẫu xe khác', file: 'CAR_Model.glb' },
+];
+
 export default function Car3DViewer() {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [envPreset, setEnvPreset] = useState<PresetType>('city');
+    const [carModel, setCarModel] = useState(CAR_MODELS[0].file);
 
     useEffect(() => {
         setIsLoaded(true);
     }, []);
 
+    // Lấy tên xe hiện tại
+    const currentCar = CAR_MODELS.find(c => c.file === carModel);
+
     return (
-        <div className="w-full h-[350px] md:h-[420px] rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-blue-100 via-white to-indigo-100 relative">
-            {/* Loading overlay */}
-            {!isLoaded && (
-                <div className="absolute inset-0 bg-blue-50/80 backdrop-blur-sm flex items-center justify-center z-10">
-                    <div className="text-center">
-                        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                        <p className="text-blue-700 font-medium">Đang tải 3D...</p>
-                    </div>
-                </div>
-            )}
+        <div className="w-full max-w-3xl mx-auto h-[480px] md:h-[600px] rounded-2xl overflow-visible shadow-2xl bg-gradient-to-br from-blue-200 via-indigo-50 to-indigo-200 relative flex flex-col items-center justify-start p-0 md:p-4">
+            {/* Thanh chọn xe và background */}
+            <div className="w-full flex flex-col md:flex-row gap-3 md:gap-6 items-center justify-center pt-4 pb-2 z-20">
+                <select
+                    className="rounded-lg px-3 py-2 bg-white/90 border border-gray-300 text-gray-700 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[180px]"
+                    value={carModel}
+                    onChange={e => setCarModel(e.target.value)}
+                >
+                    {CAR_MODELS.map(opt => (
+                        <option key={opt.file} value={opt.file}>{opt.label}</option>
+                    ))}
+                </select>
+                <select
+                    className="rounded-lg px-3 py-2 bg-white/90 border border-gray-300 text-gray-700 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[180px]"
+                    value={envPreset}
+                    onChange={e => {
+                        const val = e.target.value as PresetType;
+                        if (validPresets.includes(val)) setEnvPreset(val);
+                    }}
+                >
+                    {ENV_PRESETS.map(opt => (
+                        <option key={opt.label} value={opt.value} disabled={!!opt.disabled}>{opt.label}</option>
+                    ))}
+                </select>
+            </div>
+            {/* Khung 3D */}
+            <div className="w-full h-full flex-1 flex items-center justify-center rounded-2xl overflow-hidden bg-white/10 shadow-xl">
+                <Canvas
+                    camera={{ position: [0, 2.2, 7], fov: 45 }}
+                    shadows
+                    className="w-full h-full"
+                    onCreated={() => setIsLoaded(true)}
+                >
+                    {/* Hiệu ứng sương mù */}
+                    <fog attach="fog" args={["#e0e7ef", 5, 10]} />
+                    {/* Lighting */}
+                    <ambientLight intensity={0.7} />
+                    <directionalLight
+                        position={[5, 8, 7]}
+                        intensity={1.1}
+                        castShadow
+                        shadow-mapSize-width={2048}
+                        shadow-mapSize-height={2048}
+                    />
+                    <pointLight position={[0, 4, 0]} intensity={0.4} color="#3b82f6" />
+                    {/* Rim light phía sau xe */}
+                    <directionalLight
+                        position={[-5, 3, -5]}
+                        intensity={0.7}
+                        color="#a5b4fc"
+                    />
 
-            <Canvas
-                camera={{ position: [3, 2, 4], fov: 50 }}
-                shadows
-                className="w-full h-full"
-                onCreated={() => setIsLoaded(true)}
-            >
-                {/* Lighting */}
-                <ambientLight intensity={0.6} />
-                <directionalLight
-                    position={[5, 10, 7]}
-                    intensity={1.2}
-                    castShadow
-                    shadow-mapSize-width={2048}
-                    shadow-mapSize-height={2048}
-                />
-                <pointLight position={[0, 5, 0]} intensity={0.5} color="#3b82f6" />
-
-                {/* Car components */}
-                <CarBody />
-                <Wheel position={[1, 0.3, 0.8]} />
-                <Wheel position={[-1, 0.3, 0.8]} />
-                <Wheel position={[1, 0.3, -0.8]} />
-                <Wheel position={[-1, 0.3, -0.8]} />
-
-                {/* Ground */}
-                <Ground />
-
-                {/* Environment */}
-                <Environment preset="sunset" />
-
-                {/* Controls */}
-                <OrbitControls
-                    enablePan={false}
-                    enableZoom={true}
-                    enableRotate={true}
-                    minDistance={2}
-                    maxDistance={8}
-                    autoRotate
-                    autoRotateSpeed={0.5}
-                />
-
-                {/* Animated particles */}
-                <Particles />
-            </Canvas>
-
+                    <Suspense fallback={null}>
+                        <NissanGTRModel file={carModel} />
+                    </Suspense>
+                    {/* Ground trong suốt chỉ để đổ bóng */}
+                    <ShadowGround />
+                    {/* Environment */}
+                    <Environment preset={envPreset} background />
+                    {/* Controls */}
+                    <OrbitControls
+                        enablePan={false}
+                        enableZoom={true}
+                        enableRotate={true}
+                        minDistance={3}
+                        maxDistance={12}
+                        autoRotate
+                        autoRotateSpeed={0.7}
+                        target={[0, 0.2, 0]}
+                    />
+                    {/* Animated particles */}
+                    <Particles />
+                </Canvas>
+            </div>
             {/* Overlay info */}
             <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-3 text-sm text-white font-medium">
                 <div className="flex items-center gap-2">
                     <span className="text-yellow-400">★</span>
-                    <span>Mercedes-AMG C-Class</span>
+                    <span>{currentCar?.label || 'Xe 3D'}</span>
                 </div>
                 <div className="text-xs text-gray-300 mt-1">
                     🎮 Kéo để xoay • 🔍 Cuộn để zoom
@@ -279,4 +200,7 @@ function Particles() {
             />
         </points>
     );
-} 
+}
+
+// Preload GLTF
+useGLTF.preload('/images/Nissan_GTR.glb'); 

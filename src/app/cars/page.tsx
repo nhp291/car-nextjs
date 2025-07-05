@@ -67,6 +67,7 @@ export default function Cars() {
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     <TextField
+                        className='col-span-2 text-[#334155]'
                         color='accent'
                         width='100%'
                         height='44px'

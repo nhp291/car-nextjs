@@ -55,35 +55,35 @@ export default function Contact() {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextField
+                                    className='text-[#334155]'
                                     label="Họ và tên"
                                     placeholder="Nhập họ và tên"
                                     value={formData.name}
                                     onChange={(value) => handleChange('name', value)}
-                                    color="primary"
                                 />
                                 <TextField
+                                    className='text-[#334155]'
                                     label="Số điện thoại"
                                     placeholder="Nhập số điện thoại"
                                     value={formData.phone}
                                     onChange={(value) => handleChange('phone', value)}
-                                    color="primary"
                                 />
                             </div>
 
                             <TextField
+                                className='text-[#334155]'
                                 label="Email"
                                 placeholder="Nhập địa chỉ email"
                                 value={formData.email}
                                 onChange={(value) => handleChange('email', value)}
-                                color="primary"
                             />
 
                             <TextField
+                                className='text-[#334155]'
                                 label="Tiêu đề"
                                 placeholder="Nhập tiêu đề tin nhắn"
                                 value={formData.subject}
                                 onChange={(value) => handleChange('subject', value)}
-                                color="primary"
                             />
 
                             <div>
@@ -92,7 +92,7 @@ export default function Contact() {
                                     value={formData.message}
                                     onChange={(e) => handleChange('message', e.target.value)}
                                     placeholder="Nhập nội dung tin nhắn..."
-                                    className="w-full h-32 px-4 py-3 rounded-xl border border-indigo-200 focus:ring-2 focus:ring-indigo-400 outline-none transition-all duration-200 resize-none"
+                                    className="w-full h-32 px-4 py-3 rounded-xl border border-indigo-200 focus:ring-2 focus:ring-indigo-400 outline-none transition-all duration-200 resize-none text-[#334155]"
                                 />
                             </div>
 
@@ -145,8 +145,8 @@ export default function Contact() {
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                                         <span className="text-purple-600">✉️</span>
-                </div>
-                <div>
+                                    </div>
+                                    <div>
                                         <p className="font-semibold text-indigo-900">Email</p>
                                         <p className="text-blue-700/80">support@car-nextjs.com</p>
                                     </div>
@@ -155,8 +155,8 @@ export default function Contact() {
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
                                         <span className="text-orange-600">🕒</span>
-                </div>
-                <div>
+                                    </div>
+                                    <div>
                                         <p className="font-semibold text-indigo-900">Giờ làm việc</p>
                                         <p className="text-blue-700/80">Thứ 2 - Thứ 6: 8:00 - 18:00</p>
                                     </div>

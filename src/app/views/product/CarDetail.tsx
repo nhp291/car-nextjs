@@ -48,7 +48,6 @@ export default function CarDetail({ car }: CarDetailProps) {
     const handleAddComment = (e: React.FormEvent) => {
         e.preventDefault();
         if (!user.trim() || !content.trim()) return;
-
         const newComment = {
             id: Date.now().toString(),
             user,
@@ -57,7 +56,6 @@ export default function CarDetail({ car }: CarDetailProps) {
             date: new Date().toISOString(),
             avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user)}&background=random`
         };
-
         setComments([newComment, ...comments]);
         setUser('');
         setContent('');
@@ -70,9 +68,7 @@ export default function CarDetail({ car }: CarDetailProps) {
 
     const renderStars = (rating: number) => {
         return Array.from({ length: 5 }, (_, i) => (
-            <span key={i} className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>
-                ★
-            </span>
+            <span key={i} className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
         ));
     };
 
@@ -81,9 +77,7 @@ export default function CarDetail({ car }: CarDetailProps) {
             <div className="max-w-7xl mx-auto py-8 px-4">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-sm text-blue-700 mb-6">
-                    <button onClick={() => window.history.back()} className="hover:text-blue-900">
-                        ← Quay lại
-                    </button>
+                    <button onClick={() => window.history.back()} className="hover:text-blue-900">← Quay lại</button>
                     <IcArrowRight width="16px" height="16px" />
                     <span className="text-blue-900 font-medium">{car.brand}</span>
                     <IcArrowRight width="16px" height="16px" />
@@ -119,13 +113,11 @@ export default function CarDetail({ car }: CarDetailProps) {
                                     </span>
                                 </div>
                             </div>
-
-                            {/* 3D Viewer */}
+                            {/* 3D Viewer Nissan GTR */}
                             <div className="mt-6">
                                 <Car3DViewer />
                             </div>
                         </div>
-
                         {/* Thông tin */}
                         <div className="flex flex-col justify-between">
                             <div>
@@ -136,22 +128,15 @@ export default function CarDetail({ car }: CarDetailProps) {
                                         <p className="text-blue-600 font-medium">{car.brand}</p>
                                     </div>
                                 </div>
-
                                 <p className="text-blue-700/80 text-lg mb-6 leading-relaxed">{car.description}</p>
-
                                 {/* Đánh giá */}
                                 <div className="flex items-center gap-4 mb-6">
                                     <div className="flex items-center gap-2">
                                         {renderStars(averageRating)}
-                                        <span className="text-lg font-semibold text-indigo-900">
-                                            {averageRating.toFixed(1)}
-                                        </span>
+                                        <span className="text-lg font-semibold text-indigo-900">{averageRating.toFixed(1)}</span>
                                     </div>
-                                    <span className="text-blue-600">
-                                        ({comments.length} đánh giá)
-                                    </span>
+                                    <span className="text-blue-600">({comments.length} đánh giá)</span>
                                 </div>
-
                                 {/* Thông số cơ bản */}
                                 <div className="grid grid-cols-2 gap-4 mb-6">
                                     <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
@@ -165,7 +150,7 @@ export default function CarDetail({ car }: CarDetailProps) {
                                         <IcTire width="24px" height="24px" />
                                         <div>
                                             <p className="text-sm text-blue-600">Lốp xe</p>
-                                            <p className="font-semibold text-indigo-900">{car.tireSize}</p>
+                                            <p className="font-semibold text-indigo-900">{car.tireSize || '-'}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
@@ -184,36 +169,25 @@ export default function CarDetail({ car }: CarDetailProps) {
                                     </div>
                                 </div>
                             </div>
-
                             {/* Giá và CTA */}
                             <div className="border-t pt-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div>
                                         <p className="text-sm text-blue-600">Giá từ</p>
-                                        <p className="text-3xl font-bold text-indigo-900">
-                                            {formatCurrency(car.price)}
-                                        </p>
+                                        <p className="text-3xl font-bold text-indigo-900">{formatCurrency(car.price)}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-sm text-green-600 font-medium">
-                                            Tiết kiệm {formatCurrency(car.discount || 0)}
-                                        </p>
+                                        <p className="text-sm text-green-600 font-medium">Tiết kiệm {formatCurrency(car.discount || 0)}</p>
                                     </div>
                                 </div>
-
                                 <div className="flex gap-3">
-                                    <Button color="primary" width="100%" height="48px">
-                                        Liên hệ tư vấn
-                                    </Button>
-                                    <Button color="secondary" width="100%" height="48px">
-                                        Đặt lịch lái thử
-                                    </Button>
+                                    <Button color="primary" width="100%" height="48px">Liên hệ tư vấn</Button>
+                                    <Button color="secondary" width="100%" height="48px">Đặt lịch lái thử</Button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {/* Tabs */}
                 <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
                     <div className="flex border-b">
@@ -234,13 +208,11 @@ export default function CarDetail({ car }: CarDetailProps) {
                             </button>
                         ))}
                     </div>
-
                     <div className="p-8">
                         {activeTab === 'overview' && (
                             <div className="space-y-6">
                                 <h3 className="text-2xl font-bold text-indigo-900 mb-4">Tổng quan</h3>
                                 <p className="text-blue-700/80 leading-relaxed">{car.description}</p>
-
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <h4 className="font-semibold text-indigo-900 mb-3">Điểm nổi bật</h4>
@@ -264,11 +236,9 @@ export default function CarDetail({ car }: CarDetailProps) {
                                 </div>
                             </div>
                         )}
-
                         {activeTab === 'specs' && (
                             <div className="space-y-6">
                                 <h3 className="text-2xl font-bold text-indigo-900 mb-4">Thông số kỹ thuật</h3>
-
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div>
                                         <h4 className="font-semibold text-indigo-900 mb-4">Động cơ</h4>
@@ -291,7 +261,6 @@ export default function CarDetail({ car }: CarDetailProps) {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div>
                                         <h4 className="font-semibold text-indigo-900 mb-4">Kích thước</h4>
                                         <div className="space-y-3">
@@ -316,19 +285,15 @@ export default function CarDetail({ car }: CarDetailProps) {
                                 </div>
                             </div>
                         )}
-
                         {activeTab === 'reviews' && (
                             <div className="space-y-6">
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-2xl font-bold text-indigo-900">Đánh giá & Bình luận</h3>
                                     <div className="flex items-center gap-2">
                                         {renderStars(averageRating)}
-                                        <span className="text-lg font-semibold text-indigo-900">
-                                            {averageRating.toFixed(1)}/5
-                                        </span>
+                                        <span className="text-lg font-semibold text-indigo-900">{averageRating.toFixed(1)}/5</span>
                                     </div>
                                 </div>
-
                                 {/* Form đánh giá */}
                                 <form onSubmit={handleAddComment} className="bg-blue-50 rounded-2xl p-6">
                                     <h4 className="font-semibold text-indigo-900 mb-4">Viết đánh giá</h4>
@@ -365,18 +330,13 @@ export default function CarDetail({ car }: CarDetailProps) {
                                         required
                                     />
                                     <div className="mt-4 flex justify-end">
-                                        <Button color="primary" type="submit">
-                                            Gửi đánh giá
-                                        </Button>
+                                        <Button color="primary" type="submit">Gửi đánh giá</Button>
                                     </div>
                                 </form>
-
                                 {/* Danh sách đánh giá */}
                                 <div className="space-y-4">
                                     {comments.length === 0 ? (
-                                        <div className="text-center py-8 text-blue-700">
-                                            Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!
-                                        </div>
+                                        <div className="text-center py-8 text-blue-700">Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</div>
                                     ) : (
                                         comments.map((comment: { id: string; user: string; content: string; rating?: number; date: string }) => (
                                             <div key={comment.id} className="bg-gray-50 rounded-xl p-6">
@@ -390,9 +350,7 @@ export default function CarDetail({ car }: CarDetailProps) {
                                                             <div className="flex gap-1">
                                                                 {renderStars(comment.rating || 5)}
                                                             </div>
-                                                            <span className="text-sm text-blue-600">
-                                                                {formatDate(comment.date)}
-                                                            </span>
+                                                            <span className="text-sm text-blue-600">{formatDate(comment.date)}</span>
                                                         </div>
                                                         <p className="text-blue-700/80 leading-relaxed">{comment.content}</p>
                                                     </div>

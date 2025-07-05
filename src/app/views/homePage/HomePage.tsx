@@ -49,50 +49,24 @@ export default function HomePage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
             {/* Hero Section */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-                {/* Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-indigo-900/20"></div>
-                <div className="absolute inset-0 bg-[url('/public/images/hero-bg.png')] bg-cover bg-center opacity-10"></div>
-
-                {/* Animated Background Elements */}
-                <div className="absolute inset-0 overflow-hidden">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-float"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                animationDuration: `${3 + Math.random() * 3}s`
-                            }}
-                        />
-                    ))}
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-                    <div className="animate-fade-in">
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl">
-                            <span className="gradient-text-blue">Car Next.js</span>
-                        </h1>
-                        <p className="text-lg md:text-xl text-blue-900/80 font-medium mb-6 text-center">
-                            Nền tảng tra cứu & trải nghiệm xe hiện đại, công nghệ mới nhất 2025
-                        </p>
-                        <div className="flex flex-col md:flex-row gap-4 mt-2 justify-center w-full">
-                            <HeroSearchBar cars={cars} />
+            <section className="relative z-10 px-2 md:px-4 max-w-7xl mx-auto pt-6">
+                <div className="flex flex-col md:flex-row gap-10 items-center justify-center w-full animate-fade-in">
+                    {/* Bên trái: Search + slogan */}
+                    <div className="flex-1 w-full max-w-xl flex flex-col items-start justify-center gap-8 bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/40 p-10 transition-all duration-300 hover:shadow-[0_8px_40px_0_rgba(80,80,200,0.15)]">
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-blue-700 mb-2 drop-shadow-2xl">Car Next.js</h1>
+                        <p className="text-lg md:text-xl text-blue-900/80 font-medium mb-2">Nền tảng tra cứu & trải nghiệm xe hiện đại, công nghệ mới nhất 2025</p>
+                        <HeroSearchBar cars={cars} />
+                    </div>
+                    {/* Bên phải: Car 3D Viewer */}
+                    <div className="flex-1 w-full max-w-3xl flex items-center justify-center">
+                        <div className="w-full flex items-center justify-center">
+                            <Car3DViewer />
                         </div>
                     </div>
-
-                    {/* 3D Car Viewer */}
-                    <div className="mt-12 animate-slide-in-up">
-                        <Car3DViewer />
-                    </div>
-
-                    {/* Scroll Indicator */}
-                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
-                        <IcArrowDown width="24px" height="24px" />
-                    </div>
+                </div>
+                {/* Scroll Indicator */}
+                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
+                    <IcArrowDown width="24px" height="24px" />
                 </div>
             </section>
 
