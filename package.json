@@ -3,29 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "next": "15.3.3",
-    "postcss": "^8.5.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sass": "^1.77.4",
+    "tailwindcss": "^3.4.17",
     "three": "^0.177.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.1.10",
-    "@types/node": "^20",
+    "@types/estree": "^1.0.8",
+    "@types/json-schema": "^7.0.15",
+    "@types/node": "^24.1.0",
+    "@types/offscreencanvas": "^2019.7.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/webxr": "^0.5.22",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "tailwindcss": "^4.1.10",
+    "postcss": "^8.5.6",
     "typescript": "^5"
   }
 }
