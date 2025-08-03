@@ -1,0 +1,91 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Testing
+/coverage
+.nyc_output
+
+# Next.js
+/.next/
+/out/
+/build
+.next
+next-env.d.ts
+
+# Production
+/build
+/dist
+*.tsbuildinfo
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+/uploads
+/temp
+/logs
+*.log
+.cache
+.temp
+
+# Backend
+backend/dist/
+backend/node_modules/
+backend/coverage/
+backend/.env
+backend/logs/
+backend/uploads/
+
+# Frontend 
+frontend/.next/
+frontend/node_modules/
+frontend/.env
+frontend/coverage/
+frontend/build/
+frontend/out/
+frontend/.cache/
+
+# Prisma
+backend/prisma/*.db
+backend/prisma/migrations/*_init/
+
+# Database
+*.sql
+*.sqlite
+
+# Tests
+__tests__/coverage/
+
+# Package manager
+yarn.lock
+package-lock.json
+!frontend/yarn.lock
+!backend/yarn.lock
+
+# Docker
+.docker/data/
