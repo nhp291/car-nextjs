@@ -84,7 +84,6 @@ export const Header = () => {
                         </li>
                     ))}
                 </ul>
-                {/* Nút đăng nhập/đăng ký */}
                 <div className="px-4 pb-4 flex flex-col gap-3">
                     <Link href="/auth/login">
                         <Button color="secondary" width="100%" height="48px" className="text-base">
