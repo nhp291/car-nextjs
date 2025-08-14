@@ -48,3 +48,31 @@ export const resetPasswordSchema = z.object({
     newPassword: z.string().min(6, 'Mật khẩu mới phải có ít nhất 6 ký tự'),
   }),
 });
+
+export const verifyEmailSchema = z.object({
+  body: z.object({
+    token: z.string().min(1, 'Token không được để trống'),
+  }),
+});
+
+export const deleteAccountSchema = z.object({
+  body: z.object({
+    password: z.string().min(1, 'Mật khẩu không được để trống'),
+  }),
+});
+
+export const updateUserStatusSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'ID người dùng không được để trống'),
+  }),
+  body: z.object({
+    isActive: z.boolean(),
+    role: z.enum(['USER', 'DEALER', 'ADMIN', 'SUPER_ADMIN']).optional(),
+  }),
+});
+
+export const deleteUserSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'ID người dùng không được để trống'),
+  }),
+});

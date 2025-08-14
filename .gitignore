@@ -1,84 +1,122 @@
-# Monorepo root
-node_modules
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files
 .env
-*.log
-.DS_Store
-coverage/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*/env.example
+
+# Build outputs
 dist/
 build/
+.next/
+out/
+coverage/
 
-# Backend specific
-/backend/node_modules
-/backend/.env*
-/backend/dist
-/backend/build
-/backend/coverage
-/backend/logs
-/backend/uploads
-/backend/tmp
-/backend/.next
-/backend/*.log
-
-# Frontend specific
-/frontend/node_modules
-/frontend/.env*
-/frontend/.next
-/frontend/out
-/frontend/build
-/frontend/dist
-/frontend/coverage
-/frontend/tmp
-/frontend/*.log
-
-# Development
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/launch.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Debug logs
+# Logs
+*.log
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# Testing
-/coverage
-/.nyc_output
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
 .nyc_output
 
-# Cache & Temp
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# parcel-bundler cache (https://parceljs.org/)
 .cache
-.temp
-.tmp
+.parcel-cache
+
+# next.js build output
 .next
-dist
-build
 
-# Local env files
-.env*.local
-.env.development.local
-.env.test.local
-.env.production.local
+# nuxt.js build output
+.nuxt
 
-# Prisma
-/backend/prisma/*.db
-/backend/prisma/migrations/*_init
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Database
 *.sqlite
 *.sqlite3
 *.db
+/backend/prisma/*.db
+
+# Prisma
+/backend/prisma/migrations/*_init
+
+# Uploads and temp files
+uploads/
+tmp/
+temp/
+public/uploads/
 
 # Package managers
 package-lock.json
@@ -89,16 +127,12 @@ yarn.lock
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
-!.yarn/sdks
 !.yarn/versions
 
 # Docker
 .docker/data
 docker-compose.override.yml
 
-# Project specific
-.cache/
-public/uploads/
-tmp/
-temp/
-logs/
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

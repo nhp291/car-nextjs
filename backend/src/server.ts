@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { errorHandler } from './presentation/middleware/error.middleware';
 import { generalLimiter, authLimiter } from './presentation/middleware/rate-limit.middleware';
-import { logger } from './shared/utils/logger.util';
+import { logger, stream } from './shared/utils/logger.util';
 
 // Routes
 import authRoutes from './presentation/routes/auth.routes';
@@ -47,11 +47,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Logging middleware
-app.use(morgan('combined', {
-  stream: {
-    write: (message: string) => logger.info(message.trim()),
-  },
-}));
+app.use(morgan('combined', { stream }));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -1,4 +1,12 @@
 import winston from 'winston';
+import fs from 'fs';
+import path from 'path';
+
+// Create logs directory if it doesn't exist
+const logsDir = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 // Define log levels
 const levels = {
@@ -44,7 +52,7 @@ const transports = [
   
   // File transport for errors
   new winston.transports.File({
-    filename: 'logs/error.log',
+    filename: path.join(logsDir, 'error.log'),
     level: 'error',
     format: winston.format.combine(
       winston.format.timestamp(),
@@ -54,7 +62,7 @@ const transports = [
   
   // File transport for all logs
   new winston.transports.File({
-    filename: 'logs/all.log',
+    filename: path.join(logsDir, 'all.log'),
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.json()
