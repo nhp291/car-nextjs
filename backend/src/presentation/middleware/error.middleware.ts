@@ -38,35 +38,6 @@ export const errorHandler = (
     userAgent: req.get('User-Agent'),
   });
 
-  // Mongoose bad ObjectId
-  if (err.name === 'CastError') {
-    const message = 'Resource not found';
-    error = new CustomError(message, 404);
-  }
-
-  // Mongoose duplicate key
-  if (err.name === 'MongoError' && (err as any).code === 11000) {
-    const message = 'Duplicate field value entered';
-    error = new CustomError(message, 400);
-  }
-
-  // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const message = Object.values((err as any).errors).map((val: any) => val.message);
-    error = new CustomError(message.join(', '), 400);
-  }
-
-  // JWT errors
-  if (err.name === 'JsonWebTokenError') {
-    const message = 'Invalid token';
-    error = new CustomError(message, 401);
-  }
-
-  if (err.name === 'TokenExpiredError') {
-    const message = 'Token expired';
-    error = new CustomError(message, 401);
-  }
-
   // Prisma errors
   if (err.name === 'PrismaClientKnownRequestError') {
     const prismaError = err as any;
@@ -81,9 +52,31 @@ export const errorHandler = (
       case 'P2003':
         error = new CustomError('Foreign key constraint failed', 400);
         break;
+      case 'P2000':
+        error = new CustomError('Value too long for column', 400);
+        break;
+      case 'P2001':
+        error = new CustomError('Record not found', 404);
+        break;
       default:
         error = new CustomError('Database error', 500);
     }
+  }
+
+  // Prisma validation errors
+  if (err.name === 'PrismaClientValidationError') {
+    error = new CustomError('Validation error', 400);
+  }
+
+  // JWT errors
+  if (err.name === 'JsonWebTokenError') {
+    const message = 'Invalid token';
+    error = new CustomError(message, 401);
+  }
+
+  if (err.name === 'TokenExpiredError') {
+    const message = 'Token expired';
+    error = new CustomError(message, 401);
   }
 
   // Zod validation errors
