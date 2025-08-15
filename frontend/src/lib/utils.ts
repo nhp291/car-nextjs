@@ -1,12 +1,10 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-// Utility function for merging Tailwind classes
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Format currency
 export function formatCurrency(amount: number, currency = 'VND'): string {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -14,13 +12,11 @@ export function formatCurrency(amount: number, currency = 'VND'): string {
   }).format(amount);
 }
 
-// Format number with locale
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('vi-VN').format(num);
 }
 
-// Debounce function
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {

@@ -1,18 +1,8 @@
 'use client';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
-import { useRef, useState, useEffect, Suspense } from 'react';
+import { useRef, useState, useMemo, Suspense } from 'react';
 import * as THREE from 'three';
-
-// Ground component
-function Ground() {
-    return (
-        <mesh rotation={[-Math.PI / 2, 10, 0]} position={[0, -0.5, 0]} receiveShadow>
-            <planeGeometry args={[15, 10]} />
-            <meshStandardMaterial color="#f3f4f6" />
-        </mesh>
-    );
-}
 
 // Nissan GTR Model loader
 function NissanGTRModel({ file, ...props }: { file: string }) {
@@ -30,30 +20,27 @@ function ShadowGround() {
     );
 }
 
-const ENV_PRESETS = [
+const ENVIRONMENT_PRESETS = [
     { label: 'Thành phố (City)', value: 'city' },
     { label: 'Hoàng hôn (Sunset)', value: 'sunset' },
     { label: 'Bình minh (Dawn)', value: 'dawn' },
     { label: 'Ban đêm (Night)', value: 'night' },
     { label: 'Nhà kho (Warehouse)', value: 'warehouse' },
     { label: 'Rừng cây (Forest)', value: 'forest' },
-    { label: 'Công viên (Park)', value: 'park' },
+    { label: 'Công viên (Park)', value: 'park' },   
     { label: 'Căn hộ (Apartment)', value: 'apartment' },
     { label: 'Studio', value: 'studio' },
     { label: 'Sảnh lớn (Lobby)', value: 'lobby' },
-    { label: '--- Tuỳ chỉnh ---', value: '', disabled: true },
-    { label: 'HDRI Trường đua (Tự thêm file .hdr)', value: 'custom-hdri', disabled: true },
-    { label: 'Ảnh panorama 360° (Tự thêm file .jpg)', value: 'custom-panorama', disabled: true },
 ];
 
 // Đảm bảo envPreset luôn là 1 trong các giá trị hợp lệ
-const validPresets = [
+const VALID_ENV_PRESETS = [
     'city', 'sunset', 'dawn', 'night', 'warehouse', 'forest', 'apartment', 'studio', 'lobby', 'park'
 ] as const;
 
-type PresetType = typeof validPresets[number];
+type PresetType = typeof VALID_ENV_PRESETS[number];
 
-const CAR_MODELS = [
+const AVAILABLE_CAR_MODELS = [
     { label: 'Nissan GTR', file: 'Nissan_GTR.glb' },
     { label: 'Mitsubishi L200', file: 'Mitsubishi_L200.glb' },
     { label: 'SUV', file: 'SUV.glb' },
@@ -61,27 +48,25 @@ const CAR_MODELS = [
 ];
 
 export default function Car3DViewer() {
-    const [isLoaded, setIsLoaded] = useState(false);
     const [envPreset, setEnvPreset] = useState<PresetType>('city');
-    const [carModel, setCarModel] = useState(CAR_MODELS[0].file);
+    const [carModel, setCarModel] = useState(AVAILABLE_CAR_MODELS[0].file);
 
-    useEffect(() => {
-        setIsLoaded(true);
-    }, []);
+    const currentCar = AVAILABLE_CAR_MODELS.find(c => c.file === carModel);
 
-    // Lấy tên xe hiện tại
-    const currentCar = CAR_MODELS.find(c => c.file === carModel);
+    // Debug: Log để kiểm tra
+    console.log('ENVIRONMENT_PRESETS:', ENVIRONMENT_PRESETS);
+    console.log('envPreset:', envPreset);
+    console.log('VALID_ENV_PRESETS:', VALID_ENV_PRESETS);
 
     return (
         <div className="w-full max-w-3xl mx-auto h-[480px] md:h-[600px] rounded-2xl overflow-visible shadow-2xl bg-gradient-to-br from-blue-200 via-indigo-50 to-indigo-200 relative flex flex-col items-center justify-start p-0 md:p-4">
-            {/* Thanh chọn xe và background */}
             <div className="w-full flex flex-col md:flex-row gap-3 md:gap-6 items-center justify-center pt-4 pb-2 z-20">
                 <select
                     className="rounded-lg px-3 py-2 bg-white/90 border border-gray-300 text-gray-700 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[180px]"
                     value={carModel}
                     onChange={e => setCarModel(e.target.value)}
                 >
-                    {CAR_MODELS.map(opt => (
+                    {AVAILABLE_CAR_MODELS.map((opt: { file: string; label: string }) => (
                         <option key={opt.file} value={opt.file}>{opt.label}</option>
                     ))}
                 </select>
@@ -90,11 +75,15 @@ export default function Car3DViewer() {
                     value={envPreset}
                     onChange={e => {
                         const val = e.target.value as PresetType;
-                        if (validPresets.includes(val)) setEnvPreset(val);
+                        console.log('Selected environment:', val);
+                        if (VALID_ENV_PRESETS.includes(val)) {
+                            setEnvPreset(val);
+                            console.log('Environment updated to:', val);
+                        }
                     }}
                 >
-                    {ENV_PRESETS.map(opt => (
-                        <option key={opt.label} value={opt.value} disabled={!!opt.disabled}>{opt.label}</option>
+                    {ENVIRONMENT_PRESETS.map((opt: { label: string; value: string }) => (
+                        <option key={opt.label} value={opt.value}>{opt.label}</option>
                     ))}
                 </select>
             </div>
@@ -102,9 +91,9 @@ export default function Car3DViewer() {
             <div className="w-full h-full flex-1 flex items-center justify-center rounded-2xl overflow-hidden bg-white/10 shadow-xl">
                 <Canvas
                     camera={{ position: [0, 2.2, 7], fov: 45 }}
+                    dpr={[1, 1.5]}
                     shadows
                     className="w-full h-full"
-                    onCreated={() => setIsLoaded(true)}
                 >
                     {/* Hiệu ứng sương mù */}
                     <fog attach="fog" args={["#e0e7ef", 5, 10]} />
@@ -114,8 +103,8 @@ export default function Car3DViewer() {
                         position={[5, 8, 7]}
                         intensity={1.1}
                         castShadow
-                        shadow-mapSize-width={2048}
-                        shadow-mapSize-height={2048}
+                        shadow-mapSize-width={1024}
+                        shadow-mapSize-height={1024}
                     />
                     <pointLight position={[0, 4, 0]} intensity={0.4} color="#3b82f6" />
                     {/* Rim light phía sau xe */}
@@ -131,7 +120,7 @@ export default function Car3DViewer() {
                     {/* Ground trong suốt chỉ để đổ bóng */}
                     <ShadowGround />
                     {/* Environment */}
-                    <Environment preset={envPreset} background />
+                    <Environment preset={envPreset} background={false} />
                     {/* Controls */}
                     <OrbitControls
                         enablePan={false}
@@ -139,7 +128,7 @@ export default function Car3DViewer() {
                         enableRotate={true}
                         minDistance={3}
                         maxDistance={12}
-                        autoRotate
+                        autoRotate={false}
                         autoRotateSpeed={0.7}
                         target={[0, 0.2, 0]}
                     />
@@ -171,14 +160,16 @@ function Particles() {
         }
     });
 
-    const particleCount = 100;
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 10;
-        positions[i * 3 + 1] = Math.random() * 5;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
+    const particleCount = 40;
+    const positions = useMemo(() => {
+        const arr = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+            arr[i * 3] = (Math.random() - 0.5) * 10;
+            arr[i * 3 + 1] = Math.random() * 5;
+            arr[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        }
+        return arr;
+    }, []);
 
     return (
         <points ref={particlesRef}>
