@@ -1,13 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Button, TextField } from '../components';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcGas } from '@/app/public/icons/IcGas';
-import { IcTire } from '@/app/public/icons/IcTire';
-import { IcSteeringWheel } from '@/app/public/icons/IcSteeringWheel';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
-import { IcClose } from '@/app/public/icons/IcClose';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcGas } from '@/components/icons/IcGas';
+import { IcTire } from '@/components/icons/IcTire';
+import { IcSteeringWheel } from '@/components/icons/IcSteeringWheel';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
+import { IcClose } from '@/components/icons/IcClose';
 import Link from 'next/link';
 
 interface FavoriteCar {
@@ -45,7 +45,7 @@ export default function Favorites() {
                 gas: '5.8L/100km',
                 tire: '18 inch',
                 steering: 'Tự động',
-                image: '/public/images/car.png',
+                image: '/images/car.png',
                 badge: 'Mới',
                 addedDate: '2024-01-15',
                 notes: 'Xe gia đình tốt, tiết kiệm nhiên liệu'
@@ -60,7 +60,7 @@ export default function Favorites() {
                 gas: '6.2L/100km',
                 tire: '19 inch',
                 steering: 'Tự động',
-                image: '/public/images/car.png',
+                image: '/images/car.png',
                 badge: 'Hot',
                 addedDate: '2024-01-10',
                 notes: 'SUV đa dụng, phù hợp gia đình'
@@ -75,7 +75,7 @@ export default function Favorites() {
                 gas: '0L/100km',
                 tire: '20 inch',
                 steering: 'Tự động',
-                image: '/public/images/car.png',
+                image: '/images/car.png',
                 badge: 'Electric',
                 addedDate: '2024-01-05',
                 notes: 'Xe điện thông minh, công nghệ Việt'
@@ -90,7 +90,7 @@ export default function Favorites() {
                 gas: '7.1L/100km',
                 tire: '19 inch',
                 steering: 'Tự động',
-                image: '/public/images/car.png',
+                image: '/images/car.png',
                 badge: 'Luxury',
                 addedDate: '2024-01-01',
                 notes: 'Xe sang cao cấp, nội thất đỉnh cao'

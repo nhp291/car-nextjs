@@ -1,6 +1,6 @@
 'use client';
 
-import { IcSpinner } from '@/app/public/icons/IcSpinner';
+import { IcSpinner } from '@/components/icons/IcSpinner';
 
 type ButtonProps = {
     color?: 'accent' | 'primary' | 'secondary';

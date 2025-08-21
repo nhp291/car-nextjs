@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
-import { IcClose } from '@/app/public/icons/IcClose';
-import { Car } from '../mock/cars.mock';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
+import { IcClose } from '@/components/icons/IcClose';
+import { Car } from '@/lib/mocks/cars.mock';
 
 interface SearchBarProps {
     placeholder?: string;

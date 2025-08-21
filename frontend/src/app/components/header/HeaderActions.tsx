@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { Button } from "../button";
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
 import { headerConfig } from "./constants";
 
 interface HeaderActionsProps {

@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { useApi } from '@/lib/hooks/useApi';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
 import { Search, Filter, X, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { CarSearchFormData } from '@/lib/validations';
 import { formatCurrency } from '@/lib/utils';

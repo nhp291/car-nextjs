@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { Button, TextField } from '../components';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcFacebook } from '@/app/public/icons/IcFacebook';
-import { IcTwitter } from '@/app/public/icons/IcTwitter';
-import { IcLinkedin } from '@/app/public/icons/IcLinkedin';
-import { IcDiscord } from '@/app/public/icons/IcDiscord';
-import { IcGitHub } from '@/app/public/icons/IcGitHub';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcFacebook } from '@/components/icons/IcFacebook';
+import { IcTwitter } from '@/components/icons/IcTwitter';
+import { IcLinkedin } from '@/components/icons/IcLinkedin';
+import { IcDiscord } from '@/components/icons/IcDiscord';
+import { IcGitHub } from '@/components/icons/IcGitHub';
 
 export default function Contact() {
     const [formData, setFormData] = useState({

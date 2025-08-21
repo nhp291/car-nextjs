@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button, TextField } from '../components';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
 
 interface NewsArticle {
     id: string;

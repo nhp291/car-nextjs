@@ -93,7 +93,7 @@ Dự án website về xe hơi được xây dựng bằng Next.js 15 với TypeS
 
 ### Yêu cầu hệ thống
 - Node.js 18+ 
-- npm hoặc yarn
+- Yarn
 
 ### Bước 1: Clone dự án
 ```bash
@@ -103,15 +103,11 @@ cd car-nextjs
 
 ### Bước 2: Cài đặt dependencies
 ```bash
-npm install
-# hoặc
 yarn install
 ```
 
 ### Bước 3: Chạy dự án
 ```bash
-npm run dev
-# hoặc
 yarn dev
 ```
 
@@ -279,13 +275,13 @@ export default nextConfig;
 
 ### Vercel (Recommended)
 ```bash
-npm run build
+yarn build
 vercel --prod
 ```
 
 ### Netlify
 ```bash
-npm run build
+yarn build
 netlify deploy --prod
 ```
 
@@ -293,12 +289,12 @@ netlify deploy --prod
 ```dockerfile
 FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production
 COPY . .
-RUN npm run build
+RUN yarn build
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
 ```
 
 ## 📊 Performance Features

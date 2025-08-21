@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import CarDetail from '../../views/product/CarDetail';
-import { cars } from '../../mock/cars.mock';
+import { cars } from '@/lib/mocks/cars.mock';
 
 export default async function CarDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

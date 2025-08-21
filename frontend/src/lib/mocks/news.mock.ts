@@ -62,15 +62,15 @@ export const news: News[] = [
       
       <p>VinFast VF9 dự kiến sẽ được bán ra thị trường vào cuối năm 2024 với giá khởi điểm từ 1.2 tỷ đồng.</p>
     `,
-        image: '/public/images/car.png',
+        image: '/images/car.png',
         images: [
-            '/public/images/car.png',
-            '/public/images/hero.png'
+            '/images/car.png',
+            '/images/hero.png'
         ],
         author: {
             id: 'admin',
             name: 'Admin',
-            avatar: '/public/images/avatar1.png',
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
             bio: 'Chuyên gia phân tích xe hơi'
         },
         category: 'Tin tức',
@@ -122,15 +122,15 @@ export const news: News[] = [
       
       <p>Với những cải tiến này, Toyota Camry 2025 tiếp tục là lựa chọn hàng đầu trong phân khúc sedan cao cấp.</p>
     `,
-        image: '/public/images/hero.png',
+        image: '/images/hero.png',
         images: [
-            '/public/images/hero.png',
-            '/public/images/car.png'
+            '/images/hero.png',
+            '/images/car.png'
         ],
         author: {
             id: 'nguyen-van-a',
             name: 'Nguyễn Văn A',
-            avatar: '/public/images/avatar2.png',
+            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
             bio: 'Chuyên gia đánh giá xe hơi'
         },
         category: 'Đánh giá',
@@ -184,15 +184,15 @@ export const news: News[] = [
       
       <p>Với giá khởi điểm từ 6.5 tỷ đồng, BMW i7 định nghĩa lại khái niệm xe hạng sang điện.</p>
     `,
-        image: '/public/images/car.png',
+        image: '/images/car.png',
         images: [
-            '/public/images/car.png',
-            '/public/images/hero.png'
+            '/images/car.png',
+            '/images/hero.png'
         ],
         author: {
             id: 'tran-thi-b',
             name: 'Trần Thị B',
-            avatar: '/public/images/avatar1.png',
+            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
             bio: 'Chuyên gia xe hạng sang'
         },
         category: 'Xe hạng sang',

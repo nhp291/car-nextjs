@@ -8,7 +8,8 @@ export { default as SearchBar, HeroSearchBar, HeaderSearchBar } from './SearchBa
 // Layout Components
 export { Header } from './header';
 export { Footer } from './footer';
-export { default as Car3DViewer } from './Car3DViewer';
+// Car3DViewer đã được chuyển sang shared/components/3d
+// export { default as Car3DViewer } from './Car3DViewer';
 
 // Interactive Components
 export { default as Modal, ConfirmModal, ImageModal, FormModal } from './Modal';

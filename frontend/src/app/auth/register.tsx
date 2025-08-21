@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { Button, TextField } from '../components';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcFacebook } from '@/app/public/icons/IcFacebook';
-import { IcTwitter } from '@/app/public/icons/IcTwitter';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcFacebook } from '@/components/icons/IcFacebook';
+import { IcTwitter } from '@/components/icons/IcTwitter';
 import Link from 'next/link';
 
 export default function Register() {

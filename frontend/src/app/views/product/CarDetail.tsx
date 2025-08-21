@@ -2,16 +2,17 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Button, Car3DViewer } from '../../components';
+import { Button } from '../../components';
+import Car3DViewer from '@/components/3d/Car3DViewer';
 import { formatCurrency, formatDate } from '../../utils';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcGas } from '@/app/public/icons/IcGas';
-import { IcTire } from '@/app/public/icons/IcTire';
-import { IcSteeringWheel } from '@/app/public/icons/IcSteeringWheel';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
-import { IcArrowRight } from '@/app/public/icons/IcArrowRight';
-import { Car } from '../../mock/cars.mock';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcGas } from '@/components/icons/IcGas';
+import { IcTire } from '@/components/icons/IcTire';
+import { IcSteeringWheel } from '@/components/icons/IcSteeringWheel';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
+import { IcArrowRight } from '@/components/icons/IcArrowRight';
+import { Car } from '@/lib/mocks/cars.mock';
 
 interface CarDetailProps {
     car: Car & {

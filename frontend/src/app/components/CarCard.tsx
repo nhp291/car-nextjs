@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Car } from '../mock/cars.mock';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
-import { IcSteeringWheel } from '@/app/public/icons/IcSteeringWheel';
-import { IcTire } from '@/app/public/icons/IcTire';
-import { IcGas } from '@/app/public/icons/IcGas';
+import { Car } from '@/lib/mocks/cars.mock';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
+import { IcSteeringWheel } from '@/components/icons/IcSteeringWheel';
+import { IcTire } from '@/components/icons/IcTire';
+import { IcGas } from '@/components/icons/IcGas';
 
 interface CarCardProps {
     car: Car;
@@ -41,27 +41,27 @@ export default function CarCard({
         }).format(price);
     };
 
-    const getVariantClasses = () => {
-        switch (variant) {
-            case 'compact':
-                return 'p-4';
-            case 'featured':
-                return 'p-6 border-2 border-blue-200';
-            default:
-                return 'p-6';
-        }
-    };
+    // const getVariantClasses = () => {
+    //     switch (variant) {
+    //         case 'compact':
+    //             return 'p-4';
+    //         case 'featured':
+    //             return 'p-6 border-2 border-blue-200';
+    //         default:
+    //             return 'p-6';
+    //     }
+    // };
 
-    const getImageClasses = () => {
-        switch (variant) {
-            case 'compact':
-                return 'h-32';
-            case 'featured':
-                return 'h-48';
-            default:
-                return 'h-40';
-        }
-    };
+    // const getImageClasses = () => {
+    //     switch (variant) {
+    //         case 'compact':
+    //             return 'h-32';
+    //         case 'featured':
+    //             return 'h-48';
+    //         default:
+    //             return 'h-40';
+    //     }
+    // };
 
     return (
         <Link href={`/cars/${car.slug}`}>

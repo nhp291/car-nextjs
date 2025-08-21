@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { IcClose } from '@/app/public/icons/IcClose';
+import { IcClose } from '@/components/icons/IcClose';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
