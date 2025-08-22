@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Button, TextField } from '../components';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
 
 interface Car {
     id: string;

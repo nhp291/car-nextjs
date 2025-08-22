@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
+import { Button } from '@/components/button';
 import { useApi } from '@/lib/hooks/useApi';
 import { API_ENDPOINTS } from '@/lib/constants';
 import { Check, X, Star, Car, Fuel, Users, Settings } from 'lucide-react';

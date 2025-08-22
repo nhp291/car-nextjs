@@ -6,10 +6,15 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-slot'],
   },
 
-  // Image optimization
+  // Image optimization (use remotePatterns; local images in /public don't need config)
   images: {
-    domains: ['localhost', 'carfinder-api.com'],
     formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 
   // Environment variables

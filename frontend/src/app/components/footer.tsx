@@ -1,8 +1,8 @@
-import { IcFacebook } from '@/app/public/icons/IcFacebook';
-import { IcLinkedin } from '@/app/public/icons/IcLinkedin';
-import { IcDiscord } from '@/app/public/icons/IcDiscord';
-import { IcGitHub } from '@/app/public/icons/IcGitHub';
-import { IcLogoHeader } from '../public/icons/IcLogoHeader';
+import { IcFacebook } from '@/components/icons/IcFacebook';
+import { IcLinkedin } from '@/components/icons/IcLinkedin';
+import { IcDiscord } from '@/components/icons/IcDiscord';
+import { IcGitHub } from '@/components/icons/IcGitHub';
+import { IcLogoHeader } from '@/components/icons/IcLogoHeader';
 
 export const Footer = () => {
     return (

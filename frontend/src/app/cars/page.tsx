@@ -2,9 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { Button, TextField, CarCard } from '../components';
-import { cars } from '../mock/cars.mock';
-import { IcCarLogo } from '@/app/public/icons/IcCarLogo';
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
+import { cars } from '@/lib/mocks/cars.mock';
+import { IcCarLogo } from '@/components/icons/IcCarLogo';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
 
 export default function Cars() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +14,6 @@ export default function Cars() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
 
-    // Lọc xe theo điều kiện
     const filteredCars = useMemo(() => {
         return cars.filter(car => {
             const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

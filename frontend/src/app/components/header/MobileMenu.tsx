@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { IcLogoHeader } from '@/app/public/icons/IcLogoHeader';
+import { IcLogoHeader } from '@/components/icons/IcLogoHeader';
 import { Button } from "../button";
 import { SocialLinks } from "./SocialLinks";
 

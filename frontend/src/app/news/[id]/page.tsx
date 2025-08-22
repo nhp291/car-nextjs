@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { IcArrowRight } from '@/app/public/icons/IcArrowRight';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
+import { IcArrowRight } from '@/components/icons/IcArrowRight';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
 
 interface NewsArticle {
     id: string;

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { IcClose } from '@/app/public/icons/IcClose';
+import { IcClose } from '@/components/icons/IcClose';
 
 interface ModalProps {
   isOpen: boolean;

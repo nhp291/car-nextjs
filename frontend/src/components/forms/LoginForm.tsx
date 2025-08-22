@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormData } from '@/lib/validations';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/card';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useApi } from '@/lib/hooks/useApi';
 import { API_ENDPOINTS } from '@/lib/constants';
@@ -20,7 +20,7 @@ interface LoginFormProps {
 
 export function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const { execute, loading, error } = useApi<{ token: string; user: any }>();
+  const { execute, loading, error } = useApi<{ token: string; user: Record<string, unknown> }>();
 
   const {
     register,
@@ -43,7 +43,8 @@ export function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormProps) {
         toast.success('Đăng nhập thành công!');
         onSuccess?.();
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Login error:', err);
       toast.error('Đăng nhập thất bại. Vui lòng thử lại.');
     }
   };
@@ -131,6 +132,18 @@ export function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormProps) {
               Đăng ký ngay
             </Link>
           </div>
+          
+          {onSwitchToRegister && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={onSwitchToRegister}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Chuyển sang đăng ký
+              </button>
+            </div>
+          )}
         </form>
       </CardContent>
     </Card>

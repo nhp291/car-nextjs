@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { News } from '../mock/news.mock';
-import { IcHeartFilled } from '@/app/public/icons/IcHeartFilled';
-import { IcHeartOutline } from '@/app/public/icons/IcHeartOutline';
-import { IcArrowRight } from '@/app/public/icons/IcArrowRight';
+import { News } from '@/lib/mocks/news.mock';
+import { IcHeartFilled } from '@/components/icons/IcHeartFilled';
+import { IcHeartOutline } from '@/components/icons/IcHeartOutline';
+import { IcArrowRight } from '@/components/icons/IcArrowRight';
 
 interface NewsCardProps {
     news: News;

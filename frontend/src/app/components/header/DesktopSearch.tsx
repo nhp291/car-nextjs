@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, KeyboardEvent } from "react";
-import { IcMagnifying } from '@/app/public/icons/IcMagnifying';
+import { IcMagnifying } from '@/components/icons/IcMagnifying';
 
 interface DesktopSearchProps {
     isOpen: boolean;
