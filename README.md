@@ -1,116 +1,115 @@
-# 🚗 CarFinder - Ứng dụng tìm kiếm và so sánh xe hơi
+# 🚗 CarFinder - Modern Car Search & Compare Platform
 
-CarFinder là một ứng dụng web hiện đại được xây dựng với Next.js và Node.js, cung cấp trải nghiệm tìm kiếm và so sánh xe hơi toàn diện.
+[English](README.md) | [Tiếng Việt](README.vi.md)
 
-## ✨ Tính năng chính
+## Overview
+CarFinder is a modern web application built with Next.js and Node.js, providing comprehensive car search, comparison, and 3D visualization features.
 
-### 🎯 Frontend (Next.js 15)
-- **Giao diện hiện đại**: Thiết kế responsive với Tailwind CSS
-- **Tìm kiếm nâng cao**: Bộ lọc theo hãng, giá, loại nhiên liệu, hộp số
-- **So sánh xe**: So sánh tối đa 4 xe cùng lúc với bảng chi tiết
-- **Xem 3D**: Trình xem xe 3D với Three.js
-- **Authentication**: Hệ thống đăng nhập/đăng ký an toàn
-- **Favorites**: Lưu và quản lý xe yêu thích
-- **Admin Panel**: Giao diện quản lý cho admin
-
-### 🔧 Backend (Node.js + Express)
-- **API RESTful**: Thiết kế API chuẩn REST
-- **Database**: PostgreSQL với Prisma ORM
-- **Authentication**: JWT với refresh tokens
-- **Rate Limiting**: Bảo vệ API khỏi spam
-- **Logging**: Winston logger với file rotation
-- **Error Handling**: Xử lý lỗi toàn diện
-- **Validation**: Zod schema validation
-- **Security**: Helmet, CORS, compression
-
-## 🏗️ Cấu trúc dự án
+## 🏗️ Architecture
 
 ```
-car-app/
-├── frontend/                 # Next.js Frontend
-│   ├── src/
-│   │   ├── app/             # App Router
-│   │   ├── components/      # React Components
-│   │   │   ├── ui/         # UI Components (shadcn/ui)
-│   │   │   ├── forms/      # Form Components
-│   │   │   └── cars/       # Car-specific Components
-│   │   ├── lib/            # Utilities & Hooks
-│   │   │   ├── hooks/      # Custom Hooks
-│   │   │   ├── utils.ts    # Utility Functions
-│   │   │   ├── constants.ts # App Constants
-│   │   │   └── validations.ts # Zod Schemas
-│   │   └── types/          # TypeScript Types
-│   └── public/             # Static Assets
-├── backend/                 # Node.js Backend
-│   ├── src/
-│   │   ├── presentation/   # API Layer
-│   │   │   ├── controllers/ # Route Controllers
-│   │   │   ├── middleware/ # Express Middleware
-│   │   │   ├── routes/     # API Routes
-│   │   │   └── validators/ # Request Validation
-│   │   ├── infrastructure/ # Infrastructure Layer
-│   │   │   └── database/   # Database Services
-│   │   ├── shared/         # Shared Utilities
-│   │   │   ├── types/      # TypeScript Types
-│   │   │   └── utils/      # Utility Functions
-│   │   └── server.ts       # Express Server
-│   └── prisma/             # Database Schema
-└── docs/                   # Documentation
+carfinder/
+├── frontend/          # Next.js 15+ frontend application
+├── backend/          # Node.js + Express backend API
+├── docs/            # Documentation & guides
+└── shared/          # Shared types and utilities
 ```
 
-## 🚀 Cài đặt và chạy
+## 🚀 Quick Start
 
-### Yêu cầu hệ thống
-- Node.js 18+ 
+### Prerequisites
+- Node.js 18+
 - PostgreSQL 14+
-- npm hoặc yarn
+- Redis (optional)
+- yarn
 
-### 1. Clone repository
+### Setup & Installation
+
+1. **Clone repository**
 ```bash
-git clone https://github.com/your-username/car-app.git
-cd car-app
+git clone https://github.com/nhp291/car-nextjs.git
+cd car-nextjs
 ```
 
-### 2. Cài đặt dependencies
-```bash
-# Frontend
-cd frontend
-npm install
-
-# Backend
-cd ../backend
-npm install
-```
-
-### 3. Cấu hình database
-```bash
-# Tạo file .env trong backend/
-cp .env.example .env
-
-# Cập nhật thông tin database trong .env
-DATABASE_URL="postgresql://username:password@localhost:5432/carfinder"
-JWT_SECRET="your-secret-key"
-```
-
-### 4. Chạy migrations
+2. **Install Dependencies & Start Backend**
 ```bash
 cd backend
-npx prisma generate
-npx prisma db push
+yarn install
+yarn dev
 ```
 
-### 5. Chạy ứng dụng
+3. **Install Dependencies & Start Frontend**
 ```bash
-# Terminal 1 - Backend
-cd backend
-npm run dev
-
-# Terminal 2 - Frontend
 cd frontend
-npm run dev
+yarn install
+yarn dev
 ```
 
-Truy cập ứng dụng tại: http://localhost:3000
+4. Open [http://localhost:3000](http://localhost:3000)
+
+## 📚 Documentation
+
+- [Frontend Documentation](frontend/README.md)
+- [Backend Documentation](backend/README.md)
+- [API Documentation](docs/API.md)
+- [Deployment Guide](CARFINDER_DEPLOYMENT_GUIDE.md)
+- [Migration Checklist](CARFINDER_MIGRATION_CHECKLIST.md)
+- [Implementation Guide](CARFINDER_IMPLEMENTATION_GUIDE.md)
+- [Modernization Plan](CARFINDER_MODERNIZATION_PLAN.md)
+
+## ✨ Key Features
+
+### Frontend
+- Modern UI with Next.js 15+ and Tailwind CSS
+- 3D Car Visualization with Three.js
+- Advanced Search & Filtering
+- Real-time Car Comparison
+- Responsive Design & Dark Mode
+
+### Backend
+- RESTful API with Express & TypeScript
+- Clean Architecture
+- PostgreSQL with Prisma ORM
+- JWT Authentication & RBAC
+- Rate Limiting & Security
+
+## 🛡️ Security & Performance
+
+- JWT-based Authentication
+- Role-based Access Control
+- Rate Limiting & DDoS Protection
+- Redis Caching (optional)
+- CDN Integration Ready
+- Performance Optimizations
+
+## 🔄 CI/CD
+
+- GitHub Actions for CI
+- Automated Testing
+- Docker Containerization
+- Vercel/Railway Deployment
+- Database Migrations
+
+## � Status
+
+![CI/CD](https://github.com/nhp291/car-nextjs/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/github/license/nhp291/car-nextjs)
+![Version](https://img.shields.io/github/v/release/nhp291/car-nextjs)
+
+## 📞 Contact
+
+- **Email**: nguyenhoaiphongdev@gmail.com
+- **Email**: nhp2901@gmail.com
+- **Website**: https://car-nextjs.com
+- **GitHub**: https://github.com/nhp291/car-nextjs
+
+## 📄 License
+
+This project is MIT licensed - see [LICENSE](LICENSE) for details.
+
+---
+
+Made with ❤️ by [CarFinder Team](https://car-nextjs.com)
 
 ## 🔧 Cấu hình môi trường
 

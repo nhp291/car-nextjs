@@ -1,23 +1,46 @@
-import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { Request, Response, NextFunction } from 'express';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../../infrastructure/database/prisma/prisma.service';
 import { logger } from '../../shared/utils/logger.util';
+import { PrismaCarRepository } from '../../infrastructure/database/prisma/repositories/car.repository';
+import { ValidationError } from '../../core/errors/app.error';
 
-const prisma = new PrismaClient();
+interface FilterCarsDto {
+  search?: string;
+  brand?: string;
+  priceMin?: string;
+  priceMax?: string;
+  page?: string;
+  limit?: string;
+}
 
 export class CarController {
-  async getCars(req: Request, res: Response) {
+  private carRepository: PrismaCarRepository;
+
+  constructor(private prismaService: PrismaService) {
+    this.carRepository = new PrismaCarRepository(prismaService);
+  }
+
+  async getCars(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page = 1, limit = 12, search, brand, category, priceMin, priceMax } = req.query;
+      const { 
+        search, 
+        brand, 
+        priceMin, 
+        priceMax, 
+        page = '1', 
+        limit = '12'
+      } = req.query as FilterCarsDto;
       
-      const where: any = {
+      const where: Prisma.CarWhereInput = {
         isAvailable: true
       };
 
       if (search) {
         where.OR = [
-          { name: { contains: search as string, mode: 'insensitive' } },
-          { brand: { contains: search as string, mode: 'insensitive' } },
-          { model: { contains: search as string, mode: 'insensitive' } }
+          { name: { contains: search, mode: 'insensitive' } },
+          { brand: { contains: search, mode: 'insensitive' } },
+          { model: { contains: search, mode: 'insensitive' } }
         ];
       }
 
@@ -27,14 +50,16 @@ export class CarController {
 
       if (priceMin || priceMax) {
         where.price = {};
-        if (priceMin) where.price.gte = Number(priceMin);
-        if (priceMax) where.price.lte = Number(priceMax);
+        if (priceMin) where.price = { ...where.price, gte: new Prisma.Decimal(priceMin) };
+        if (priceMax) where.price = { ...where.price, lte: new Prisma.Decimal(priceMax) };
       }
 
-      const skip = (Number(page) - 1) * Number(limit);
+      const pageNum = Math.max(1, parseInt(page));
+      const limitNum = Math.min(50, Math.max(1, parseInt(limit)));
+      const skip = (pageNum - 1) * limitNum;
       
       const [cars, total] = await Promise.all([
-        prisma.car.findMany({
+        this.prismaService.car.findMany({
           where,
           skip,
           take: Number(limit),
@@ -53,7 +78,7 @@ export class CarController {
             }
           }
         }),
-        prisma.car.count({ where })
+        this.prismaService.car.count({ where })
       ]);
 
       res.status(200).json({
@@ -75,58 +100,35 @@ export class CarController {
     }
   }
 
-  async getCarById(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-
-      const car = await prisma.car.findUnique({
-        where: { id },
-        include: {
-          categories: {
-            include: {
-              category: true
-            }
-          },
-          reviews: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                  email: true
-                }
-              }
-            },
-            orderBy: { createdAt: 'desc' }
-          },
-          _count: {
-            select: {
-              reviews: true,
-              favorites: true
-            }
-          }
-        }
-      });
-
-      if (!car) {
-        return res.status(404).json({
-          success: false,
-          message: 'Không tìm thấy xe'
-        });
-      }
-
-      res.status(200).json({
-        success: true,
-        data: car
-      });
-    } catch (error) {
-      logger.error('Get car by ID error:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Lỗi server khi lấy thông tin xe'
-      });
+  async getCarById(req: Request, res: Response): Promise<void> {
+  try {
+    const id = req.params.id;
+    if (!id || isNaN(parseInt(id))) {
+      throw new ValidationError("Invalid car ID");
     }
+
+    const car = await this.carRepository.findById(parseInt(id));
+
+    if (!car) {
+      res.status(404).json({
+        success: false,
+        message: "Không tìm thấy xe",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: car,
+    });
+  } catch (error) {
+    logger.error("Get car by ID error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Lỗi server khi lấy thông tin xe",
+    });
   }
+}
 
   async searchCars(req: Request, res: Response) {
     try {
@@ -153,7 +155,7 @@ export class CarController {
         if (priceMax) where.price.lte = Number(priceMax);
       }
 
-      const cars = await prisma.car.findMany({
+      const cars = await this.prismaService.car.findMany({
         where,
         take: 20,
         orderBy: { createdAt: 'desc' },
@@ -181,7 +183,7 @@ export class CarController {
 
   async getBrands(req: Request, res: Response) {
     try {
-      const brands = await prisma.car.findMany({
+      const brands = await this.prismaService.car.findMany({
         select: { brand: true },
         where: { isAvailable: true },
         distinct: ['brand'],
@@ -203,7 +205,7 @@ export class CarController {
 
   async getCategories(req: Request, res: Response) {
     try {
-      const categories = await prisma.category.findMany({
+      const categories = await this.prismaService.category.findMany({
         orderBy: { name: 'asc' }
       });
 
@@ -222,7 +224,7 @@ export class CarController {
 
   async getFeaturedCars(req: Request, res: Response) {
     try {
-      const cars = await prisma.car.findMany({
+      const cars = await this.prismaService.car.findMany({
         where: { 
           isAvailable: true,
           isFeatured: true 
@@ -253,7 +255,7 @@ export class CarController {
 
   async getPopularCars(req: Request, res: Response) {
     try {
-      const cars = await prisma.car.findMany({
+      const cars = await this.prismaService.car.findMany({
         where: { isAvailable: true },
         take: 8,
         orderBy: { viewCount: 'desc' },
@@ -281,7 +283,7 @@ export class CarController {
 
   async getNewCars(req: Request, res: Response) {
     try {
-      const cars = await prisma.car.findMany({
+      const cars = await this.prismaService.car.findMany({
         where: { 
           isAvailable: true,
           year: { gte: new Date().getFullYear() - 1 }
