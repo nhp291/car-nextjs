@@ -30,6 +30,16 @@ export const CreateCarDto = z.object({
   })
 });
 
+export type CreateCarDto = {
+  slug: string;
+  name: string;
+  brand: string;
+  year: number;
+  price: number;
+  isAvailable?: boolean;
+};
+
+
 export const UpdateCarDto = z.object({
   params: z.object({
     id: z.string().regex(/^\d+$/, 'ID must be a number')
