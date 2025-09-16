@@ -1,6 +1,6 @@
 # 🚗 NextSpark - Modern Car Search & Compare Platform
 
-[English](README.md) | [Tiếng Việt](README.vi.md)
+[English](README.md) 
 
 ## Overview
 NextSpark is a modern web application built with Next.js and Node.js, providing comprehensive car search, comparison, and 3D visualization features.
