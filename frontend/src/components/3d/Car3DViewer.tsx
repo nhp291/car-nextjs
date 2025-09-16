@@ -131,7 +131,7 @@ export default function Car3DViewer() {
     // Simple fallback component
     if (showFallback) {
         return (
-            <div className="w-full max-w-4xl mx-auto h-[500px] md:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative">
+            <div className="w-[700px] mx-auto h-[700px] md:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-indigo-600/20"></div>
                 
                 {/* Animated background elements */}

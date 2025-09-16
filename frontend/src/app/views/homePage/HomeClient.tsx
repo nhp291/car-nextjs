@@ -22,17 +22,15 @@ export default function HomeClient() {
     const categories = ['Tất cả', 'Sedan', 'SUV', 'Hatchback', 'Coupe', 'Convertible', 'Wagon', 'Pickup', 'Van', 'Supercar'];
 
     useEffect(() => {
-        // Check if WebGL is supported
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
         if (!gl) {
             setIs3DSupported(false);
         }
         
-        // Set a shorter timeout for initial loading
         const timeout = setTimeout(() => {
             setIsLoading(false);
-        }, 3000); // 3 second timeout
+        }, 3000);
 
         return () => clearTimeout(timeout);
     }, []);
@@ -45,27 +43,23 @@ export default function HomeClient() {
         );
     };
 
-    const filteredCars = selectedCategory === 'Tất cả'
-        ? cars
-        : cars.filter((car: Car) => car.category === selectedCategory);
+    const filteredCars = selectedCategory === 'Tất cả' ? cars : cars.filter((car: Car) => car.category === selectedCategory);
 
     const featuredCars = cars.filter((car: Car) => car.isNew || car.category === 'Supercar').slice(0, 3);
     const latestNews = news.slice(0, 3);
 
-    // 3D Fallback Component
     const Car3DFallback = () => (
-        <div className="w-full max-w-4xl mx-auto h-[500px] md:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-indigo-600/20"></div>
+        
+        <div className="w-full mx-auto h-[700px] md:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative">
+            {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-indigo-600/20"></div> */}
             
-            {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-20 left-20 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-pulse"></div>
                 <div className="absolute top-40 right-20 w-40 h-40 bg-purple-400/20 rounded-full blur-xl animate-pulse delay-1000"></div>
                 <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-indigo-400/20 rounded-full blur-xl animate-pulse delay-2000"></div>
             </div>
 
-            {/* Car placeholder */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center z-10">
                 <div className="text-center">
                     <div className="relative mb-8">
                         <div className="w-48 h-48 mx-auto bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
@@ -93,9 +87,9 @@ export default function HomeClient() {
                 </div>
             </div>
 
-            {/* Floating elements */}
+            {/* Floating element */}
             <div className="absolute top-8 left-8 bg-green-500/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-green-400 border border-green-500/30">
-                ⚡ Hiệu suất cao
+                ⚡ Hiệu suất caos
             </div>
             
             <div className="absolute bottom-8 right-8 bg-blue-500/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-blue-400 border border-blue-500/30">
@@ -105,28 +99,25 @@ export default function HomeClient() {
     );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
-            {/* Enhanced animated background elements */}
+        <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
                 <div className="absolute top-40 right-20 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
                 <div className="absolute bottom-20 left-1/4 w-80 h-80 bg-purple-400/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-400/5 to-purple-400/5 rounded-full blur-3xl animate-pulse delay-3000"></div>
-                
-                {/* Floating elements */}
                 <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-blue-400/30 rounded-full animate-float-slow"></div>
                 <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-purple-400/30 rounded-full animate-float-slow delay-1000"></div>
                 <div className="absolute bottom-1/4 right-1/4 w-5 h-5 bg-indigo-400/30 rounded-full animate-float-slow delay-2000"></div>
             </div>
 
-            <section className="relative z-10 px-4 md:px-6 max-w-7xl mx-auto pt-16 pb-20">
-                <div className="flex flex-col lg:flex-row gap-16 items-center justify-center w-full animate-fade-in">
+            <section className="relative z-10 md:px-6 max-w-7xl mx-auto pt-10 pb-10">
+                <div className="flex flex-col lg:flex-row gap-10 items-center justify-center w-full animate-fade-in">
 
-                    {/* Left Content - Enhanced */}
                     <div className="flex-1 w-full max-w-2xl flex flex-col items-start justify-center gap-10 bg-gradient-to-br from-white/90 to-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-12 transition-all duration-700 hover:shadow-[0_20px_80px_rgba(80,80,200,0.3)] hover:scale-[1.02] hover:from-white/95 hover:to-white/70">
                         <div className="flex items-center justify-center w-full">
                             <div className="relative">
-                                <IcLogoHeader width="280px" height="280px" />
+                                <IcLogoHeader width="200px" height="100px" />
                                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-xl animate-pulse"></div>
                             </div>
                         </div>
@@ -172,7 +163,7 @@ export default function HomeClient() {
                     </div>
 
                     {/* Right Content - 3D Viewer with loading state */}
-                    <div className="flex-1 w-full max-w-4xl flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center">
                         {isLoading ? (
                             <div className="w-full max-w-4xl mx-auto h-[500px] md:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative flex items-center justify-center">
                                 {/* Animated background elements */}
@@ -228,11 +219,11 @@ export default function HomeClient() {
                                 </div>
                             </div>
                         ) : is3DSupported ? (
-                            <div className="w-full transform hover:scale-105 transition-transform duration-700">
+                            <div className="w-[700px] md:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative flex items-center justify-center">
                                 <Car3DViewer />
                             </div>
                         ) : (
-                            <div className="w-full transform hover:scale-105 transition-transform duration-700">
+                            <div className="w-[700px] md:h-[700px] rounded-3xl overflow-hidden shadow-2xl relative flex items-center justify-center">
                                 <Car3DFallback />
                             </div>
                         )}
