@@ -1,6 +1,6 @@
-# 🚗 CarFinder Backend - Modern TypeScript API
+# 🚗 NextSpark Backend - Modern TypeScript API
 
-A modern, scalable TypeScript backend API for CarFinder, built with Clean Architecture principles.
+A modern, scalable TypeScript backend API for NextSpark, built with Clean Architecture principles.
 
 ## 🏗️ Architecture
 
@@ -418,4 +418,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ by the CarFinder Team**
+**Built with ❤️ by the NextSpark Team**

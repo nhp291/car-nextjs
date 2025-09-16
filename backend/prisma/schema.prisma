@@ -7,8 +7,166 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ------------------------- ENUMS -------------------------
+
+enum ListingStatus {
+  DRAFT
+  ACTIVE
+  UNDER_OFFER
+  UNDER_INSPECTION
+  SOLD
+  CANCELLED
+}
+
+enum OfferStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PAID
+  CANCELLED
+  REFUNDED
+  COMPLETED
+}
+
+enum EscrowStatus {
+  HELD
+  RELEASED
+  REFUNDED
+  DISPUTED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+}
+
+enum CarCondition {
+  NEW
+  USED
+  CERTIFIED
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+  PLUG_IN_HYBRID
+  LPG
+  CNG
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+  CVT
+  SEMI_AUTOMATIC
+}
+
+enum DriveType {
+  FWD
+  RWD
+  AWD
+  FOUR_WHEEL_DRIVE
+}
+
+enum TestDriveStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum InquiryType {
+  GENERAL
+  PRICING
+  FINANCING
+  TRADE_IN
+  WARRANTY
+  TECHNICAL
+}
+
+enum InquiryStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum NotificationType {
+  PRICE_DROP
+  NEW_CAR_MATCH
+  TEST_DRIVE_REMINDER
+  INQUIRY_RESPONSE
+  REVIEW_REPLY
+  FOLLOW
+  LIKE
+  COMMENT
+}
+
+enum ChatRole {
+  MEMBER
+  ADMIN
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+}
+
+enum PriceReason {
+  INITIAL
+  PROMOTION
+  SEASONAL
+  CLEARANCE
+  MARKET_ADJUSTMENT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum LedgerType {
+  PAYMENT_CAPTURE
+  PAYMENT_REFUND
+  FEE
+  SETTLEMENT
+}
+
+// ------------------------- MODELS -------------------------------
+
 model User {
-  id          String    @id @default(uuid())
+  id          String    @id @default(uuid()) // UUID
   email       String    @unique
   username    String    @unique
   password    String
@@ -18,51 +176,68 @@ model User {
   phone       String?
   dateOfBirth DateTime?
   address     String?
-  role        Role      @default(USER)
+
   isActive    Boolean   @default(true)
   isVerified  Boolean   @default(false)
   lastLoginAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
-  // Relations
-  favorites     Favorite[]
+  // RBAC
+  userRoles UserRole[]
+
+  // Relations (thumbnails)
+  favorites     Favorite[]     // danh sách favorite (cars)
   comparisons   Comparison[]
-  reviews       Review[]
+  reviews       Review[]       // reviews viết bởi user
   sessions      Session[]
   notifications Notification[]
-  testDrives    TestDrive[]
-  inquiries     Inquiry[]
-  posts         Post[]
-  comments      Comment[]
-  likes         Like[]
-  following     Follow[]       @relation("UserFollowing")
-  followers     Follow[]       @relation("UserFollowers")
 
-  // Chat
+  subscriptions  Subscription[]
+  billingRecords BillingRecord[]
+
+  testDrives TestDrive[]
+  inquiries  Inquiry[]
+
+  posts     Post[]       // bài viết (post)
+  comments  Comment[]
+  postLikes PostLike[]   // likes trên post
+  carLikes  CarLike[]    // likes trên car
+
+  following Follow[]  @relation("UserFollowing")
+  followers Follow[]  @relation("UserFollowers")
+
   chatParticipants ChatParticipant[]
   messages         Message[]
 
-  // 🤖 Bot
   botConversations BotConversation[]
+  offers           Offer[]           @relation("UserOffers")
+  listings         Listing[]         @relation("UserListings") // nếu user là seller
+  ordersAsBuyer    Order[]           @relation("OrderBuyer")
+  ordersAsSeller   Order[]           @relation("OrderSeller")
+  payments         Payment[]         @relation("UserPayments")
+  payouts          Payout[]          @relation("UserPayouts")
 
   @@map("users")
 }
 
+/// Dealer: đại lý — có thể quản lý nhiều xe/test drive.
 model Dealer {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
-  email       String   @unique
+  email       String    @unique
   phone       String
   address     String
   website     String?
   logo        String?
   description String?
-  rating      Decimal? @db.Decimal(2, 1)
-  isVerified  Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  rating      Decimal?  @db.Decimal(2, 1)
+  isVerified  Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   cars       Car[]
   testDrives TestDrive[]
@@ -71,8 +246,9 @@ model Dealer {
   @@map("dealers")
 }
 
+/// Car: master data lưu thông tin kỹ thuật, media, trạng thái, analytics.
 model Car {
-  id               Int          @id @default(autoincrement())
+  id               String       @id @default(uuid())
   slug             String       @unique
   name             String
   brand            String
@@ -120,10 +296,10 @@ model Car {
   isFeatured  Boolean @default(false)
   stock       Int     @default(0)
 
-  // Location & Dealer
-  location String?
+  // Dealer (nullable nếu không liên kết dealer)
   dealerId String?
   dealer   Dealer? @relation(fields: [dealerId], references: [id])
+
   warranty String?
 
   // SEO
@@ -131,13 +307,13 @@ model Car {
   metaDescription String?
   keywords        String[]
 
-  // Ratings & Analytics
+  // Analytics
   rating        Decimal? @db.Decimal(2, 1)
   reviewCount   Int      @default(0)
   viewCount     Int      @default(0)
   favoriteCount Int      @default(0)
 
-  // AI & Analytics
+  // AI
   aiScore     Decimal? @db.Decimal(3, 2)
   marketTrend String?
 
@@ -145,81 +321,320 @@ model Car {
   updatedAt DateTime @updatedAt
 
   // Relations
-  favorites    Favorite[]
-  comparisons  ComparisonItem[]
-  reviews      Review[]
-  categories   CarCategory[]
-  testDrives   TestDrive[]
-  inquiries    Inquiry[]
-  posts        Post[]
-  likes        Like[]
+  favorites   Favorite[]
+  comparisons ComparisonItem[]
+  reviews     Review[]
+  categories  CarCategory[]
+  testDrives  TestDrive[]
+  inquiries   Inquiry[]
+  posts       Post[]
+  carLikes    CarLike[]
+
+  // Price history (lưu lịch sử giá của car mẫu)
   priceHistory PriceHistory[]
 
-  @@index([brand])
-  @@index([fuelType])
-  @@index([price])
-  @@index([year])
-  @@index([isAvailable])
-  @@index([location])
-  @@index([name, brand, model])
+  listings Listing[]
+
+  createdBy String?
+  updatedBy String?
+
+  @@index([brand, model, price])
   @@map("cars")
 }
 
-model TestDrive {
-  id          Int             @id @default(autoincrement())
-  userId      String
-  carId       Int
-  dealerId    String?
-  scheduledAt DateTime
-  status      TestDriveStatus @default(PENDING)
-  notes       String?
-  feedback    String?
-  rating      Int?
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  car    Car     @relation(fields: [carId], references: [id], onDelete: Cascade)
-  dealer Dealer? @relation(fields: [dealerId], references: [id], onDelete: SetNull)
-
-  @@index([userId])
-  @@index([carId])
-  @@map("test_drives")
-}
-
-model Inquiry {
-  id        Int           @id @default(autoincrement())
-  userId    String
-  carId     Int
-  dealerId  String?
-  type      InquiryType   @default(GENERAL)
-  subject   String
-  message   String        @db.Text
-  status    InquiryStatus @default(OPEN)
-  response  String?       @db.Text
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  car    Car     @relation(fields: [carId], references: [id], onDelete: Cascade)
-  dealer Dealer? @relation(fields: [dealerId], references: [id], onDelete: SetNull)
-
-  @@index([userId])
-  @@index([carId])
-  @@map("inquiries")
-}
-
+/// PriceHistory: lưu lịch sử giá của car (master)
 model PriceHistory {
-  id        Int         @id @default(autoincrement())
-  carId     Int
-  price     Decimal     @db.Decimal(12, 2)
-  reason    PriceReason @default(INITIAL)
-  createdAt DateTime    @default(now())
-
-  car Car @relation(fields: [carId], references: [id])
-
-  @@map("price_history")
+  id        String   @id @default(uuid())
+  carId     String
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  price     Decimal  @db.Decimal(12, 2)
+  reason    PriceReason?
+  createdAt DateTime @default(now())
 }
+
+/// TestDrive: lịch hẹn lái thử
+model TestDrive {
+  id          String          @id @default(uuid())
+  carId       String
+  userId      String
+  dealerId    String?
+  status      TestDriveStatus @default(PENDING)
+  scheduledAt DateTime
+  createdAt   DateTime        @default(now())
+
+  car    Car     @relation(fields: [carId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
+  dealer Dealer? @relation(fields: [dealerId], references: [id])
+}
+
+/// Inquiry: yêu cầu thông tin (buyer hỏi seller/dealer)
+model Inquiry {
+  id        String        @id @default(uuid())
+  carId     String
+  userId    String
+  dealerId  String?
+  type      InquiryType
+  status    InquiryStatus @default(OPEN)
+  message   String?
+  createdAt DateTime      @default(now())
+
+  car    Car     @relation(fields: [carId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
+  dealer Dealer? @relation(fields: [dealerId], references: [id])
+}
+
+/// Listing: instance của Car do seller đăng bán (có giá, trạng thái cho mỗi seller)
+model Listing {
+  id            String        @id @default(uuid())
+  carId         String
+  car           Car           @relation(fields: [carId], references: [id], onDelete: Cascade)
+  sellerId      String?       // user id của seller (nullable nếu seller là Dealer - cân nhắc unify)
+  seller        User?         @relation("UserListings", fields: [sellerId], references: [id])
+  price         Decimal       @db.Decimal(12, 2)
+  currency      String        @default("VND")
+  status        ListingStatus @default(ACTIVE)
+  isFeatured    Boolean       @default(false)
+  featuredUntil DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  location      String?
+  mileage       Int?
+  vin           String?
+  views         Int           @default(0)
+  version       Int           @default(1) // optimistic lock
+
+  favorites     Favorite[]
+  offers        Offer[]
+  orders        Order[]
+  documents     File[]        @relation("ListingFiles")
+  orderItems    OrderItem[]   @relation("ListingOrderItems")
+
+  createdBy String?
+  updatedBy String?
+
+  @@index([sellerId])
+  @@index([status])
+}
+
+/// Offer: user gửi đề nghị giá cho listing
+model Offer {
+  id        String      @id @default(uuid())
+  listingId String
+  buyerId   String
+  amount    Decimal     @db.Decimal(12, 2)
+  currency  String      @default("VND")
+  status    OfferStatus @default(PENDING)
+  message   String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  buyer   User    @relation("UserOffers", fields: [buyerId], references: [id])
+}
+
+/// Order: gom các OrderItem, liên kết tới Payment/Invoice/Escrow
+model Order {
+  id            String      @id @default(uuid())
+  buyerId       String
+  sellerId      String
+  listingId     String
+  status        OrderStatus @default(PENDING)
+  totalAmount   Decimal     @db.Decimal(12, 2)
+  currency      String      @default("VND")
+  depositAmount Decimal?    @db.Decimal(12, 2)
+  commissionPct Decimal?    @db.Decimal(5, 2)
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  buyer       User         @relation("OrderBuyer", fields: [buyerId], references: [id])
+  seller      User         @relation("OrderSeller", fields: [sellerId], references: [id])
+  listing     Listing      @relation(fields: [listingId], references: [id])
+  items       OrderItem[]
+  payments    Payment[]    @relation("PaymentForOrder")
+  invoices    Invoice[]
+  commissions Commission[] @relation("OrderCommissions")
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([buyerId, status])
+  @@index([sellerId, status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  listingId   String?
+  listing     Listing? @relation("ListingOrderItems", fields: [listingId], references: [id])
+  description String?
+  unitPrice   Decimal  @db.Decimal(12, 2)
+  quantity    Int      @default(1)
+}
+
+/// Escrow: lưu deposit/tiền giữ hộ cho order
+model Escrow {
+  id          String       @id @default(uuid())
+  orderId     String       @unique
+  heldAmount  Decimal      @db.Decimal(12, 2)
+  currency    String       @default("VND")
+  status      EscrowStatus @default(HELD)
+  createdAt   DateTime     @default(now())
+  releasedAt  DateTime?
+  releaseNote String?
+  payments    Payment[]    @relation("EscrowPayments")
+}
+
+/// Payment: lưu attempt thanh toán, link tới order/escrow
+model Payment {
+  id                String          @id @default(cuid())
+  userId            String?
+  orderId           String?
+  order             Order?          @relation("PaymentForOrder", fields: [orderId], references: [id], onDelete: SetNull)
+  escrowId          String?
+  escrow            Escrow?         @relation("EscrowPayments", fields: [escrowId], references: [id], onDelete: SetNull)
+  amount            Decimal         @db.Decimal(12, 2)
+  currency          String          @default("VND")
+  status            PaymentStatus   @default(PENDING)
+  provider          String // e.g., "stripe", "vnpay", "zalo"
+  providerPaymentId String?
+  providerData      Json?
+  paymentMethod     Json?
+  idempotencyKey    String?         @unique
+  attemptCount      Int             @default(0)
+  errorMessage      String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+  refunds           PaymentRefund[] @relation("PaymentRefunds")
+  user              User?           @relation("UserPayments", fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+model PaymentRefund {
+  id               String       @id @default(cuid())
+  paymentId        String
+  providerRefundId String?
+  amount           Decimal      @db.Decimal(12, 2)
+  status           RefundStatus @default(PENDING)
+  reason           String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  payment          Payment      @relation("PaymentRefunds", fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@map("payment_refunds")
+}
+
+model LedgerEntry {
+  id          String   @id @default(cuid())
+  referenceId String   // paymentId / refundId / orderId
+  type        LedgerType
+  amount      Decimal  @db.Decimal(12, 2)
+  currency    String
+  meta        Json?
+  createdAt   DateTime @default(now())
+
+  @@map("ledger_entries")
+}
+
+model OutboxEvent {
+  id          String   @id @default(cuid())
+  aggregate   String   // e.g., "Payment"
+  aggregateId String
+  type        String   // e.g., "PaymentSucceeded"
+  payload     Json
+  processed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  processedAt DateTime?
+  retryCount   Int     @default(0)
+
+  @@map("outbox_events")
+}
+
+model Invoice {
+  id       String   @id @default(uuid())
+  orderId  String
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  amount   Decimal  @db.Decimal(12, 2)
+  currency String   @default("VND")
+  issuedAt DateTime @default(now())
+  pdfUrl   String?
+}
+
+model Commission {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation("OrderCommissions", fields: [orderId], references: [id], onDelete: Cascade)
+  percent   Decimal  @db.Decimal(5, 2)
+  amount    Decimal  @db.Decimal(12, 2)
+  createdAt DateTime @default(now())
+}
+
+model Payout {
+  id               String       @id @default(uuid())
+  sellerId         String
+  amount           Decimal      @db.Decimal(12, 2)
+  currency         String       @default("VND")
+  status           PayoutStatus @default(PENDING)
+  provider         String?
+  providerPayoutId String?
+  seller           User         @relation("UserPayouts", fields: [sellerId], references: [id], onDelete: Cascade)
+  createdAt        DateTime     @default(now())
+  processedAt      DateTime?
+}
+
+model File {
+  id        String   @id @default(uuid())
+  ownerId   String?
+  ownerType String?
+  url       String
+  name      String?
+  mimeType  String?
+  size      Int?
+  createdAt DateTime @default(now())
+
+  listingId String?
+  listing   Listing? @relation("ListingFiles", fields: [listingId], references: [id])
+}
+
+model Plan {
+  id            String         @id @default(uuid())
+  name          String
+  price         Decimal        @db.Decimal(12, 2)
+  features      String[]
+  subscriptions Subscription[]
+  createdAt     DateTime       @default(now())
+}
+
+model Subscription {
+  id        String             @id @default(uuid())
+  userId    String
+  planId    String
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      Plan               @relation(fields: [planId], references: [id], onDelete: Cascade)
+  status    SubscriptionStatus @default(ACTIVE)
+  startedAt DateTime           @default(now())
+  expiresAt DateTime?
+
+  @@index([userId])
+}
+
+model BillingRecord {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  amount    Decimal  @db.Decimal(12, 2)
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+// ------------------------- Social & Content -------------------------
 
 model Follow {
   id          Int      @id @default(autoincrement())
@@ -235,22 +650,23 @@ model Follow {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    String
-  carId     Int
+  carId     String
   title     String
-  content   String   @db.Text
+  content   String    @db.Text
   images    String[]
   tags      String[]
-  isPublic  Boolean  @default(true)
-  likeCount Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPublic  Boolean   @default(true)
+  likeCount Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   user     User      @relation(fields: [userId], references: [id])
   car      Car?      @relation(fields: [carId], references: [id])
   comments Comment[]
-  likes    Like[]
+  postLikes PostLike[]
 
   @@map("posts")
 }
@@ -272,20 +688,32 @@ model Comment {
   @@map("comments")
 }
 
-model Like {
+/// PostLike: like dành riêng cho Post
+model PostLike {
   id        Int      @id @default(autoincrement())
   userId    String
-  postId    Int?
-  carId     Int?
+  postId    Int
   createdAt DateTime @default(now())
 
-  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
-  car  Car?  @relation(fields: [carId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
+  @@index([postId])
+}
+
+/// CarLike: like dành riêng cho Car
+model CarLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  carId     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car  Car  @relation(fields: [carId], references: [id], onDelete: Cascade)
+
   @@unique([userId, carId])
-  @@map("likes")
+  @@index([carId])
 }
 
 model Notification {
@@ -303,24 +731,25 @@ model Notification {
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  slug        String   @unique
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  slug        String        @unique
   description String?
   image       String?
   icon        String?
-  isActive    Boolean  @default(true)
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  cars CarCategory[]
+  isActive    Boolean       @default(true)
+  sortOrder   Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  cars        CarCategory[]
 
   @@map("categories")
 }
 
 model CarCategory {
-  carId      Int
+  // mapping giữa Car (UUID) và Category (Int)
+  carId      String
   categoryId Int
   car        Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -330,13 +759,16 @@ model CarCategory {
 }
 
 model Favorite {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   userId    String
-  carId     Int
+  carId     String
+  listingId String?
+
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  car  Car  @relation(fields: [carId], references: [id], onDelete: Cascade)
+  listing Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car     Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
 
   @@unique([userId, carId])
   @@index([userId])
@@ -350,7 +782,7 @@ model Comparison {
   name      String?
   isPublic  Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
 
   user  User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
   items ComparisonItem[]
@@ -359,10 +791,10 @@ model Comparison {
 }
 
 model ComparisonItem {
-  id           Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   comparisonId Int
-  carId        Int
-  order        Int @default(0)
+  carId        String
+  order        Int    @default(0)
 
   comparison Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
   car        Car        @relation(fields: [carId], references: [id], onDelete: Cascade)
@@ -374,7 +806,7 @@ model ComparisonItem {
 model Review {
   id         Int      @id @default(autoincrement())
   userId     String
-  carId      Int
+  carId      String
   rating     Int
   title      String
   content    String   @db.Text
@@ -385,7 +817,7 @@ model Review {
   isVerified Boolean  @default(false)
   isHelpful  Int      @default(0)
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   car  Car  @relation(fields: [carId], references: [id], onDelete: Cascade)
@@ -407,6 +839,8 @@ model Session {
 
   @@map("sessions")
 }
+
+// ------------------------- Chat & Bot -------------------------
 
 model ChatRoom {
   id        String   @id @default(uuid())
@@ -509,95 +943,37 @@ model BotMemory {
   conversation BotConversation @relation(fields: [conversationId], references: [id])
 }
 
-// Enums
-enum Role {
-  USER
-  DEALER
-  ADMIN
-  SUPER_ADMIN
+// ------------------------- RBAC (Role / Permission) -------------------------
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  users       UserRole[]
+  permissions RolePermission[]
 }
 
-enum CarCondition {
-  NEW
-  USED
-  CERTIFIED
+model Permission {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  roles       RolePermission[]
 }
 
-enum FuelType {
-  PETROL
-  DIESEL
-  ELECTRIC
-  HYBRID
-  PLUG_IN_HYBRID
-  LPG
-  CNG
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
 }
 
-enum Transmission {
-  MANUAL
-  AUTOMATIC
-  CVT
-  SEMI_AUTOMATIC
-}
+model UserRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
 
-enum DriveType {
-  FWD
-  RWD
-  AWD
-  FOUR_WHEEL_DRIVE
-}
-
-enum TestDriveStatus {
-  PENDING
-  CONFIRMED
-  COMPLETED
-  CANCELLED
-  NO_SHOW
-}
-
-enum InquiryType {
-  GENERAL
-  PRICING
-  FINANCING
-  TRADE_IN
-  WARRANTY
-  TECHNICAL
-}
-
-enum InquiryStatus {
-  OPEN
-  IN_PROGRESS
-  RESOLVED
-  CLOSED
-}
-
-enum NotificationType {
-  PRICE_DROP
-  NEW_CAR_MATCH
-  TEST_DRIVE_REMINDER
-  INQUIRY_RESPONSE
-  REVIEW_REPLY
-  FOLLOW
-  LIKE
-  COMMENT
-}
-
-enum ChatRole {
-  MEMBER
-  ADMIN
-}
-
-enum MessageType {
-  TEXT
-  IMAGE
-  FILE
-  SYSTEM
-}
-
-enum PriceReason {
-  INITIAL
-  PROMOTION
-  SEASONAL
-  CLEARANCE
-  MARKET_ADJUSTMENT
+  @@id([userId, roleId])
 }

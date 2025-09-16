@@ -1,9 +1,9 @@
-# 🚗 CarFinder - Modern Car Search & Compare Platform
+# 🚗 NextSpark - Modern Car Search & Compare Platform
 
 [English](README.md) | [Tiếng Việt](README.vi.md)
 
 ## Overview
-CarFinder is a modern web application built with Next.js and Node.js, providing comprehensive car search, comparison, and 3D visualization features.
+NextSpark is a modern web application built with Next.js and Node.js, providing comprehensive car search, comparison, and 3D visualization features.
 
 ## 🏗️ Architecture
 
@@ -100,7 +100,7 @@ yarn dev
 
 - **Email**: nguyenhoaiphongdev@gmail.com
 - **Email**: nhp2901@gmail.com
-- **Website**: https://car-nextjs.com
+- **Website**: https://car-nextjs
 - **GitHub**: https://github.com/nhp291/car-nextjs
 
 ## 📄 License
@@ -109,14 +109,14 @@ This project is MIT licensed - see [LICENSE](LICENSE) for details.
 
 ---
 
-Made with ❤️ by [CarFinder Team](https://car-nextjs.com)
+Made with ❤️ by [NextSpark](https://car-nextjs)
 
 ## 🔧 Cấu hình môi trường
 
 ### Frontend (.env.local)
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_APP_NAME=CarFinder
+NEXT_PUBLIC_APP_NAME=
 ```
 
 ### Backend (.env)
@@ -236,16 +236,15 @@ MIT License - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
 ## 👥 Team
 
-- **Frontend Developer**: [Your Name]
-- **Backend Developer**: [Your Name]
-- **UI/UX Designer**: [Your Name]
+- **Fullstack Developer**: nhp291 (nguyenhoaiphongdev@gmail.com)
+
 
 ## 📞 Support
 
 Nếu có vấn đề, vui lòng tạo issue hoặc liên hệ:
-- Email: support@carfinder.com
-- Discord: [CarFinder Community]
+- Email: nguyenhoaiphongdev@gmail.com
+- Discord: [NextSpark Community](https://discord.gg/nextspark)
 
 ---
 
-Made with ❤️ by CarFinder Team 
+**Made with ❤️ by NextSpark Team**

@@ -1,0 +1,9 @@
+{
+  "forbidden": [
+    {
+      "name": "not-allowed-to-import-infra",
+      "from": { "path": "^src/domain" },
+      "to": { "path": "^src/infrastructure" }
+    }
+  ]
+}

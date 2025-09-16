@@ -1,4 +1,4 @@
-# 🚗 CarFinder Frontend
+# 🚗 NextSpark Frontend
 
 Modern car search & comparison platform built with Next.js, React, and TypeScript.
 
@@ -65,11 +65,14 @@ Modern car search & comparison platform built with Next.js, React, and TypeScrip
 ### Prerequisites
 - Node.js 20.5.0+
 - npm 10.0.0+ 
+- PostgreSQL 14+
+- Redis (optional)
+- Yarn 
 
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/car-finder.git
+git clone https://github.com/nhp291/car-nextjs.git
 
 # Install dependencies 
 npm install
@@ -166,9 +169,9 @@ MIT License. See [LICENSE](./LICENSE) for details.
 
 ## 👥 Team
 
-- **Nguyen Huu Phuoc** - Lead Developer - [@nhp291](https://github.com/nhp291)
+- **Fullstack Developer**: nhp291 (nguyenhoaiphongdev@gmail.com)
 
-## �️ Tech Stack
+## 🛠️ Tech Stack
 
 ### Core
 - **Next.js 15.3.3** - App Router
@@ -244,9 +247,10 @@ CMD ["yarn", "start"]
 ## 📞 Contact
 
 - Email: nhp2901@gmail.com
+- Email: nguyenhoaiphongdev@gmail.com
 - GitHub: [@nhp291](https://github.com/nhp291)
 - Website: [car-nextjs.com](https://car-nextjs.com)
 
 ---
 
-**Made with ❤️ by CarFinder Team**
+**Made with ❤️ by NextSpark Team**
