@@ -1,9 +1,12 @@
-import { Car } from "../models/car";
+import { Car } from '../models/car';
 
 export interface ICarRepository {
+  findById(id: string): Promise<Car | null>;
   findAll(): Promise<Car[]>;
-  findById(id: number): Promise<Car | null>;
-  create(data: Car): Promise<Car>;
-  update(id: number, data: Partial<Car>): Promise<Car | null>;
-  delete(id: number): Promise<void>;
+  create(data: Partial<Car>): Promise<Car>;
+  update(id: string, data: Partial<Car>): Promise<Car>;
+  delete(id: string): Promise<void>;
+  findBySlug(slug: string): Promise<Car | null>;
+  findPopular(): Promise<Car[]>;
+
 }

@@ -8,7 +8,7 @@ export class CarService {
     return this.carRepo.findAll();
   }
 
-  async getCar(id: number) {
+  async getCar(id: string) {
     return this.carRepo.findById(id);
   }
 
@@ -20,11 +20,11 @@ export class CarService {
     });
   }
 
-  async updateCar(id: number, data: Partial<CreateCarDto>) {
+  async updateCar(id: string, data: Partial<CreateCarDto>) {
     return this.carRepo.update(id, data);
   }
 
-  async deleteCar(id: number) {
+  async deleteCar(id: string) {
     return this.carRepo.delete(id);
   }
 }
