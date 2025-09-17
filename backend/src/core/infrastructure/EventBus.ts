@@ -1,0 +1,1 @@
+// adapter to publish events (in-memory / broker)
