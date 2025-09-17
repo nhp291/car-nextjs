@@ -1,4 +1,4 @@
-# 🤖 Copilot Instructions for CarFinder Codebase
+# 🤖 Copilot Instructions for NextSpark Codebase
 
 ## Big Picture Architecture
 - **Monorepo**: `backend/` (Node.js, Express, TypeScript, Prisma, PostgreSQL), `frontend/` (Next.js 15+, TypeScript, Tailwind CSS)
@@ -30,25 +30,45 @@
 - **Testing**: Use Jest + Supertest for backend, colocate tests with code or in `__tests__/`
 - **Frontend**: Use atomic/feature-based structure, Tailwind for styling, Zod for validation, React context for auth
 
-## Integration & Data Flow
-- **API**: RESTful, see backend `README.md` for endpoint list
-- **Auth**: JWT, roles: USER, DEALER, ADMIN, SUPER_ADMIN
-- **DB**: PostgreSQL, Prisma schema in `prisma/schema.prisma`
-- **Caching**: Redis (optional, see infra)
-- **3D/Media**: Frontend uses Three.js via `Car3DViewer`
+## 📄 License
 
-## Examples & Patterns
-- **Add new car**: Implement Zod schema → controller → service → Prisma
-- **Add new API**: Add route in `routes/`, controller in `controllers/`, types in `shared/types/`
-- **Validation**: Example in `car.validator.ts`
-- **RBAC**: Example in `car.routes.ts` with `authorize(['ADMIN'])`
-- **Error**: Throw `new AppError(message, statusCode)`
-- **Response**: Always return `ApiResponse` type
-
-## External Dependencies
-- **Backend**: Express, Prisma, PostgreSQL, Zod, Winston, JWT, Redis, Helmet, Rate Limit
-- **Frontend**: Next.js, React, Tailwind, Three.js, Zod, ESLint, Prettier
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-For more, see `backend/README.md` and `frontend/README.md`. If a pattern is unclear, ask for clarification or check the relevant directory for examples.
+**Built with ❤️ by the NextSpark Team**
+
+## 📱 Responsive Design
+
+### Breakpoints
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
+
+## 🛡️ Security & Performance
+
+- JWT-based Authentication
+- Role-based Access Control
+- Rate Limiting & DDoS Protection
+- Redis Caching (optional)
+- CDN Integration Ready
+- Performance Optimizations
+
+## 🔄 CI/CD
+
+- GitHub Actions for CI
+- Automated Testing
+- Docker Containerization
+- Vercel/Railway Deployment
+- Database Migrations
+
+## 📝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+---
+**Built with ❤️ by the NextSpark Team**
